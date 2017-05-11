@@ -1,0 +1,15 @@
+GIF
+android/
+ios/
+coverage/
+__tests__/
+.eslintrc
+yarn.lock
+index.ios.js
+index.android.js
+.buckconfig
+.travis.yml
+.watchmanconfig
+.flowconfig
+.babelrc
+.gitattributes
