@@ -13,7 +13,9 @@ export default StyleSheet.create({
   },
   ctrl: {
     flex: 1.5,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
     paddingHorizontal: 15
   },
   result: {
@@ -28,6 +30,17 @@ export default StyleSheet.create({
     marginVertical: 4,
     fontWeight: '200',
     color: '#fff'
+  },
+  clearText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: '400'
+  },
+  startText: {
+    textAlign: 'left'
+  },
+  endText: {
+    textAlign: 'right'
   },
   week: {
     flex: 1,
@@ -75,7 +88,6 @@ export default StyleSheet.create({
   },
   closeIcon: {
     width: 22,
-    height: 22,
-    marginBottom: 10
+    height: 22
   }
 });
