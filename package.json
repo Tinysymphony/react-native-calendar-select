@@ -1,7 +1,7 @@
 {
 	"name": "react-native-calendar-select",
 	"version": "0.0.1",
-	"description": "Calendar component for react-native, like Airbnb.",
+	"description": "Calendar component for react-native, helps users select a date period, like Airbnb.",
 	"main": "./Calendar.js",
 	"repository": {
 		"type": "git",
@@ -17,8 +17,9 @@
 	},
 	"keywords": [
 		"react-native",
-		"react-native-calendar-xg",
-		"calendar"
+		"react-native-calendar-select",
+		"calendar",
+		"date"
 	],
 	"dependencies": {
 		"moment": "^2.18.1"
