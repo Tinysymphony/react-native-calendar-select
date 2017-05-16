@@ -5,7 +5,7 @@
 	"main": "./Calendar.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Tinysymphony/react-native-calendar-xg.git"
+		"url": "git+https://github.com/Tinysymphony/react-native-calendar-select.git"
 	},
 	"scripts": {
 		"start": "react-native start",

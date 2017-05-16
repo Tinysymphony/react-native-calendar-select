@@ -8,9 +8,6 @@ let mod = scale * width % 7
 if (mod) {
   dayWidth = ((7 - mod) / scale + width) / 7;
 }
-const Colors  = {
-  main: '#15aaaa'
-}
 export default StyleSheet.create({
   dayContainer: {
     width: dayWidth,
@@ -18,45 +15,33 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   startContainer: {
-    borderTopLeftRadius: width / 16,
-    borderBottomLeftRadius: width / 16,
-    backgroundColor: '#fff'
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 100
   },
   endContainer: {
-    borderTopRightRadius: width / 16,
-    borderBottomRightRadius: width / 16,
-    backgroundColor: '#fff'
-  },
-  midDay: {
-    backgroundColor: '#fff'
+    borderTopRightRadius: 100,
+    borderBottomRightRadius: 100
   },
   today: {
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.40)'
   },
   day: {
-    width: width / 8,
-    height: width / 8,
-    borderRadius: width / 16,
+    width: dayWidth,
+    height: dayWidth,
+    borderRadius: dayWidth / 2,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center'
   },
   dayText: {
     fontSize: 16,
-    color: '#fcfcfc',
+    fontWeight: '400',
     textAlign: 'center'
   },
   dayTextDisabled: {
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.54)',
     textAlign: 'center'
-  },
-  focusText: {
-    color: Colors.main
-  },
-  startDay: {
-    backgroundColor: '#fff',
-    // borderWidth: 0
   }
 });

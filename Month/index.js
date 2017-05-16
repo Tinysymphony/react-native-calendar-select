@@ -49,7 +49,7 @@ export default class Month extends Component {
       if (i18n === 'en') {
         return `${Month.I18N_MAP[i18n][m]}, ${y}`;
       }
-      return `${y}年${m + 1}月`;
+      return month.format('YYYY年M月');
     }
   }
   _getDayList (date) {
@@ -101,15 +101,17 @@ export default class Month extends Component {
   render () {
     const {
       month,
-      today
+      today,
+      color
     } = this.props;
+    let subColor = {color: color.subColor};
     let titleText = this._getMonthText();
     let dayList = this._getDayList(month.clone());
     let rowArray = new Array(dayList.length / 7).fill('');
     return (
       <View style={styles.month}>
         <View style={styles.monthTitle}>
-          <Text style={styles.monthTitleText}>{titleText}</Text>
+          <Text style={[styles.monthTitleText, subColor]}>{titleText}</Text>
         </View>
         <View style={styles.days}>
           {rowArray.map((item, i) =>

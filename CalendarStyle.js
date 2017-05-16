@@ -2,14 +2,21 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
-const {scale} = Dimensions.get('window');
-const Colors  = {
-  main: '#15aaaa'
+const {scale, width} = Dimensions.get('window');
+let iconSize = 22;
+let resultFontSize = 24;
+let weekTextFontSize = 16;
+let slashLength = 80;
+if (width < 350) {
+  resultFontSize = 20;
+  weekTextFontSize = 14;
+  iconSize = 20;
+  slashLength = 70;
 }
+
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: Colors.main
+    flex: 1
   },
   ctrl: {
     flex: 1.5,
@@ -25,15 +32,25 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+  resultSlash: {
+    width: slashLength,
+    height: 1 / scale,
+    transform: [
+      {
+        rotateZ: '-45deg'
+      }
+    ]
+  },
+  resultPart: {
+    flex: 1
+  },
   resultText: {
-    fontSize: 26,
+    fontSize: resultFontSize,
     marginVertical: 4,
-    fontWeight: '200',
-    color: '#fff'
+    fontWeight: '200'
   },
   clearText: {
     fontSize: 18,
-    color: '#fff',
     fontWeight: '400'
   },
   startText: {
@@ -50,15 +67,13 @@ export default StyleSheet.create({
   },
   weekText: {
     flex: 1,
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.77)',
+    fontSize: weekTextFontSize,
     textAlign: 'center',
   },
   scroll: {
     flex: 9,
     borderTopWidth: 1 / scale,
-    borderBottomWidth: 1 / scale,
-    borderColor: 'rgba(255, 255, 255, 0.5)'
+    borderBottomWidth: 1 / scale
   },
   scrollArea: {
     flex: 1
@@ -71,23 +86,25 @@ export default StyleSheet.create({
   confirmContainer: {
     overflow: 'hidden',
     backgroundColor: 'rgba(255, 255, 255, 0.40)',
-    paddingHorizontal: 130,
-    paddingVertical: 10,
-    borderRadius: 4
+    borderRadius: 4,
+    margin: 14,
+    flex: 1,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   },
   confirmContainerDisabled: {
     backgroundColor: 'rgba(255, 255, 255, 0.20)'
   },
   confirmText: {
-    color: '#f0f0f0',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   confirmTextDisabled: {
     color: 'rgba(255, 255, 255, 0.40)'
   },
   closeIcon: {
-    width: 22,
-    height: 22
+    width: iconSize,
+    height: iconSize
   }
 });

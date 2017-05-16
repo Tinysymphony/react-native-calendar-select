@@ -6,13 +6,13 @@ import React, {PropTypes, Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  ListView
+  ListView,
+  Dimensions
 } from 'react-native';
 import Moment from 'moment';
 import styles from './CalendarStyle';
 import Month from './Month';
-
+const {width} = Dimensions.get('window');
 export default class MonthList extends Component {
   constructor (props) {
     super(props);
@@ -28,6 +28,8 @@ export default class MonthList extends Component {
     this._renderMonth = this._renderMonth.bind(this);
     this._shouldUpdate = this._shouldUpdate.bind(this);
     this._checkRange = this._checkRange.bind(this);
+    this._getWeekNums = this._getWeekNums.bind(this);
+    this._scrollToSelecetdMonth = this._scrollToSelecetdMonth.bind(this);
   }
   componentWillReceiveProps (nextProps) {
     let isDateUpdated = ['startDate', 'endDate', 'minDate', 'maxDate'].reduce((prev, next) => {
@@ -90,9 +92,42 @@ export default class MonthList extends Component {
     }
     return monthList;
   }
+  _getWeekNums(start, end) {
+    let clonedMoment = Moment(start), date, day, num, y, m, total = 0;
+    while (!clonedMoment.isSame(end, 'months')) {
+      y = clonedMoment.year();
+      m = clonedMoment.month();
+      date = new Date(y, m, 1);
+      day = date.getDay();
+      num = new Date(y, m + 1, 0).getDate();
+      total += Math.ceil((num + day) / 7);
+      clonedMoment.add(1, 'months');
+    }
+    return total;
+  }
+  _scrollToSelecetdMonth () {
+    const {
+      startDate,
+      minDate
+    } = this.props;
+    let monthOffset = 12 * (startDate.year() - minDate.year()) +
+      startDate.month() - minDate.month();
+    let weekOffset = this._getWeekNums(minDate, startDate);
+    setTimeout(() => {
+      this.list && this.list.scrollTo({
+        x: 0,
+        y: monthOffset * (24 + 25) + (monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
+        animated: true
+      });
+    }, 400);
+  }
+  componentDidMount () {
+    this.props.startDate && this._scrollToSelecetdMonth();
+  }
   render () {
     return (
       <ListView
+        ref={(list) => {this.list = list;}}
         style={styles.scrollArea}
         dataSource={this.state.dataSource}
         renderRow={this._renderMonth}

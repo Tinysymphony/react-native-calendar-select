@@ -23,12 +23,16 @@ export default class Calendar extends Component {
   static propTypes = {
     i18n: PropTypes.string,
     format: PropTypes.string,
+    customI18n: PropTypes.object,
+    color: PropTypes.object,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
   }
   static defaultProps = {
     format: 'YYYY-MM-DD',
-    i18n: 'en'
+    i18n: 'en',
+    customI18n: {},
+    color: {}
   }
   static I18N_MAP = {
     'zh': {
@@ -40,7 +44,8 @@ export default class Calendar extends Component {
         'date': '日 期',
         'save': '保 存',
         'clear': '清除'
-      }
+      },
+      'date': 'M月D日'
     },
     'en': {
       'w': ['', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
@@ -51,22 +56,56 @@ export default class Calendar extends Component {
         'date': 'Date',
         'save': 'Save',
         'clear': 'Reset'
-      }
+      },
+      'date': 'DD / MM'
     },
     'jp': {
       'w': ['', '月', '火', '水', '木', '金', '土', '日'],
       'weekday': ['', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
       'text': {
         'start': 'スタート',
-        'end': '終わり',
+        'end': 'エンド',
         'date': '時　間',
         'save': '確　認',
         'clear': 'クリア'
-      }
+      },
+      'date': 'M月D日'
     }
   }
   constructor (props) {
     super(props);
+    this.state = {
+      isModalVisible: false
+    };
+    this._today = Moment();
+    this._year = this._today.year();
+    this._i18n = this._i18n.bind(this);
+    this._getDateRange = this._getDateRange.bind(this);
+    this._onChoose = this._onChoose.bind(this);
+    this._resetCalendar = this._resetCalendar.bind(this);
+    this.close = this.close.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.open = this.open.bind(this);
+    this.clear = this.clear.bind(this);
+    this.confirm = this.confirm.bind(this);
+    this._getDateRange();
+  }
+  componentDidMount () {
+    this._resetCalendar();
+  }
+  _i18n (data, type) {
+    const {
+      i18n,
+      customI18n
+    } = this.props;
+    if (~['w', 'weekday', 'text'].indexOf(type)) {
+      return (customI18n[type] || {})[data] || Calendar.I18N_MAP[i18n][type][data];
+    }
+    if (type === 'date') {
+      return data.format(customI18n[type] || Calendar.I18N_MAP[i18n][type]);
+    }
+  }
+  _resetCalendar () {
     const {
       startDate,
       endDate,
@@ -74,38 +113,16 @@ export default class Calendar extends Component {
     } = this.props;
     let start = Moment(startDate, format);
     let end = Moment(endDate, format);
-    this.state = {
-      isModalVisible: false,
-      startDate: start.isValid() ? start : null,
-      endDate: end.isValid() ? end: null
-    };
-    this._today = Moment();
-    this._year = this._today.year();
-    this._i18n = this._i18n.bind(this);
-    this._getDayList = this._getDayList.bind(this);
-    this._getDateRange = this._getDateRange.bind(this);
-    this._onChoose = this._onChoose.bind(this);
-    this.close = this.close.bind(this);
-    this.open = this.open.bind(this);
-    this.clear = this.clear.bind(this);
-    this.confirm = this.confirm.bind(this);
-    this._getDateRange();
-  }
-  _i18n (data, type) {
-    const {
-      i18n
-    } = this.props;
-    if (~['w', 'weekday', 'text'].indexOf(type)) {
-      return Calendar.I18N_MAP[i18n][type][data];
-    }
-    if (type === 'date') {
-      if (i18n === 'zh' || i18n === 'jp') {
-        return data.month() + 1 + '月' + data.date() + '日';
-      }
-      if (i18n === 'en') {
-        return data.format('DD / MM');
-      }
-    }
+    let isStartValid = start.isValid() && start >= this._minDate && start <= this._maxDate;
+    let isEndValid = end.isValid() && end >= this._minDate && end <= this._maxDate;
+    this.setState({
+      startDate: isStartValid ? start : null,
+      startDateText: isStartValid ? this._i18n(start, 'date') : '',
+      startWeekdayText: isStartValid ? this._i18n(start.isoWeekday(), 'weekday') : '',
+      endDate: isEndValid ? end: null,
+      endDateText: isEndValid ? this._i18n(end, 'date') : '',
+      endWeekdayText: isEndValid ? this._i18n(end.isoWeekday(), 'weekday') : ''
+    });
   }
   _getDateRange () {
     const {
@@ -131,27 +148,6 @@ export default class Calendar extends Component {
     this._minDate = min;
     this._maxDate = max;
   }
-  _getDayList (date) {
-    let dayList;
-    let month = date.month();
-    let weekday = date.isoWeekday();
-    if (weekday === 7) {
-      dayList = [];
-    } else {
-      dayList = new Array(weekday).fill('');
-    }
-    while(date.month() === month) {
-      dayList.push(date.clone());
-      date.add(1, 'days');
-    }
-    date.subtract(1, 'days');
-    weekday = date.isoWeekday();
-    if (weekday === 7) {
-      return dayList.concat(new Array(6).fill(''));
-    }
-    return dayList.concat(new Array(Math.abs(weekday - 6)).fill(''));
-  }
-
   _onChoose (day) {
     const {
       startDate,
@@ -174,6 +170,10 @@ export default class Calendar extends Component {
       });
     }
   }
+  cancel () {
+    this.close();
+    this._resetCalendar();
+  }
   close () {
     this.setState({
       isModalVisible: false
@@ -195,9 +195,18 @@ export default class Calendar extends Component {
     });
   }
   confirm () {
-    this.props.onConfirm && this.props.onConfirm(
-      this.state.startDate, this.state.endDate
-    );
+    const {
+      startDate,
+      endDate
+    } = this.state;
+    let startMoment = startDate ? startDate.clone() : null;
+    let endMoment = endDate ? endDate.clone() : null;
+    this.props.onConfirm && this.props.onConfirm({
+      startDate: startMoment ? startMoment.toDate() : null,
+      endDate: endMoment ? endMoment.toDate() : null,
+      startMoment,
+      endMoment
+    });
     this.close();
   }
   render () {
@@ -209,18 +218,28 @@ export default class Calendar extends Component {
       endDateText,
       endWeekdayText
     } = this.state;
-    let isValid = startDate && endDate;
+    const {
+      mainColor = '#15aaaa',
+      subColor = '#fff',
+      borderColor = 'rgba(255, 255, 255, 0.50)'
+    } = this.props.color;
+    let color = {mainColor, subColor, borderColor};
+    let mainBack = {backgroundColor: mainColor};
+    let subBack = {backgroundColor: subColor};
+    let mainFontColor = {color: mainColor};
+    let subFontColor = {color: subColor};
+    let isValid = !startDate || endDate;
     let isClearVisible = startDate || endDate;
     return (
       <Modal
         animationType={"slide"}
         visible={this.state.isModalVisible}
         onRequestClose={this.close}>
-        <View style={styles.container}>
+        <View style={[styles.container, mainBack]}>
           <View style={styles.ctrl}>
             <TouchableHighlight
               underlayColor="transparent"
-              onPress={this.close}
+              onPress={this.cancel}
               >
               <Image
                 style={styles.closeIcon}
@@ -231,33 +250,34 @@ export default class Calendar extends Component {
               underlayColor="transparent"
               activeOpacity={0.8}
               onPress={this.clear}>
-              <Text style={styles.clearText}>{this._i18n('clear', 'text')}</Text>
+              <Text style={[styles.clearText, subFontColor]}>{this._i18n('clear', 'text')}</Text>
             </TouchableHighlight>}
           </View>
           <View style={styles.result}>
             <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.startText]}>
+              <Text style={[styles.resultText, styles.startText, subFontColor]}>
                 {startDateText || this._i18n('start', 'text')}
               </Text>
-              <Text style={[styles.resultText, styles.startText]}>
+              <Text style={[styles.resultText, styles.startText, subFontColor]}>
                 {startWeekdayText || this._i18n('date', 'text')}
               </Text>
             </View>
+            <View style={[styles.resultSlash, subBack]}/>
             <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.endText]}>
+              <Text style={[styles.resultText, styles.endText, subFontColor]}>
                 {endDateText || this._i18n('end', 'text')}
               </Text>
-              <Text style={[styles.resultText, styles.endText]}>
+              <Text style={[styles.resultText, styles.endText, subFontColor]}>
                 {endWeekdayText || this._i18n('date', 'text')}
               </Text>
             </View>
           </View>
           <View style={styles.week}>
             {[7, 1, 2, 3, 4, 5, 6].map(item =>
-              <Text style={styles.weekText}　key={item}>{this._i18n(item, 'w')}</Text>
+              <Text style={[styles.weekText, subFontColor]}　key={item}>{this._i18n(item, 'w')}</Text>
             )}
           </View>
-          <View style={styles.scroll}>
+          <View style={[styles.scroll, {borderColor}]}>
             <MonthList
               today={this._today}
               minDate={this._minDate}
@@ -266,6 +286,7 @@ export default class Calendar extends Component {
               endDate={this.state.endDate}
               onChoose={this._onChoose}
               i18n={this.props.i18n}
+              color={color}
             />
           </View>
           <View style={styles.btn}>
@@ -275,12 +296,20 @@ export default class Calendar extends Component {
                 style={styles.confirmContainer}
                 onPress={this.confirm}>
                 <View style={styles.confirmBtn}>
-                  <Text style={styles.confirmText}>{this._i18n('save', 'text')}</Text>
+                  <Text
+                    ellipsisMode="tail" numberOfLines={1}
+                    style={[styles.confirmText, subFontColor]}>
+                    {this._i18n('save', 'text')}
+                  </Text>
                 </View>
               </TouchableHighlight> :
               <View style={[styles.confirmContainer, styles.confirmContainerDisabled]}>
                 <View style={styles.confirmBtn}>
-                  <Text style={[styles.confirmText, styles.confirmTextDisabled]}>{this._i18n('save', 'text')}</Text>
+                  <Text
+                    ellipsisMode="tail" numberOfLines={1}
+                    style={[styles.confirmText, styles.confirmTextDisabled]}>
+                    {this._i18n('save', 'text')}
+                  </Text>
                 </View>
               </View>
             }
