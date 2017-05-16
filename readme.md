@@ -18,11 +18,11 @@ A date picker component like Airbnb. You can select a date period from the calen
 #### Android Examples
 
 
-<a href="#ios-en" id="ios-en"><img src="./GIF/a-en.gif" align="left" width="200"></a>
+<a href="#a-en" id="a-en"><img src="./GIF/a-en.gif" align="left" width="200"></a>
 
-<a href="#ios-zh" id="ios-zh"><img src="./GIF/a-zh.gif" align="left" width="200"></a>
+<a href="#a-zh" id="a-zh"><img src="./GIF/a-zh.gif" align="left" width="200"></a>
 
-<a href="#ios-jp" id="ios-jp"><img src="./GIF/a-jp.gif" width="200"></a>
+<a href="#a-jp" id="a-jp"><img src="./GIF/a-jp.gif" width="200"></a>
 
 
 ### Usage
