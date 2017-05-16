@@ -72,8 +72,8 @@ export default StyleSheet.create({
   },
   scroll: {
     flex: 9,
-    borderTopWidth: 1 / scale,
-    borderBottomWidth: 1 / scale
+    borderTopWidth: 1,
+    borderBottomWidth: 1
   },
   scrollArea: {
     flex: 1

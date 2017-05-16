@@ -2,15 +2,31 @@
 
 A date picker component like Airbnb. You can select a date period from the calendar modal.
 
+
 ### Examples
 
-<a href="#ios-en" id="ios-en"><img src="./GIF/ios-en.gif"  align="left" width="200"></a>
+#### iOS Examples
 
-<a href="#ios-zh" id="ios-zh"><img src="./GIF/ios-zh.gif"  align="left" width="200"></a>
 
-<a href="#ios-jp" id="ios-jp"><img src="./GIF/ios-jp.gif"  align="left" width="200"></a>
+<a href="#ios-en" id="ios-en"><img src="./GIF/ios-en.gif" align="left" width="200"></a>
+
+<a href="#ios-zh" id="ios-zh"><img src="./GIF/ios-zh.gif" align="left" width="200"></a>
+
+<a href="#ios-jp" id="ios-jp"><img src="./GIF/ios-jp.gif" width="200"></a>
+
+
+#### Android Examples
+
+
+<a href="#ios-en" id="ios-en"><img src="./GIF/a-en.gif" align="left" width="200"></a>
+
+<a href="#ios-zh" id="ios-zh"><img src="./GIF/a-zh.gif" align="left" width="200"></a>
+
+<a href="#ios-jp" id="ios-jp"><img src="./GIF/a-jp.gif" width="200"></a>
+
 
 ### Usage
+
 
 > This component use `moment.js` to process date.
 

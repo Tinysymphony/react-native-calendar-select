@@ -53,8 +53,8 @@ export default class calendar extends Component {
     };
     // optional property, too.
     let color = {
-      subColor: '#f0f0f0',
-      mainColor: '#166751'
+      subColor: '#f4d329',
+      mainColor: '#47464b'
     };
     const {
       startDate,
@@ -75,7 +75,7 @@ export default class calendar extends Component {
           <Text style={styles.font}>{text}</Text>
         </View>
         <Calendar
-          i18n="zh"
+          i18n="en"
           color={color}
           ref={(calendar) => {this.calendar = calendar;}}
           format="YYYYMMDD"
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 6,
     marginBottom: 30,
-    backgroundColor: '#396f3c'
+    backgroundColor: '#db9c0e'
   },
   btnFont: {
     color: '#fff',
