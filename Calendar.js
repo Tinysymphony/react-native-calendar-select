@@ -232,7 +232,7 @@ export default class Calendar extends Component {
     let isClearVisible = startDate || endDate;
     return (
       <Modal
-        animationType={"slide"}
+        animationType={'slide'}
         visible={this.state.isModalVisible}
         onRequestClose={this.close}>
         <View style={[styles.container, mainBack]}>

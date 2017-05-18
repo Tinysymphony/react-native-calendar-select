@@ -13,6 +13,9 @@ import Moment from 'moment';
 import styles from './style';
 
 export default class Day extends Component {
+  static propTypes = {
+    onChoose: PropTypes.func
+  }
   constructor (props) {
     super(props);
     this._chooseDay = this._chooseDay.bind(this);
@@ -20,7 +23,7 @@ export default class Day extends Component {
     this._statusCheck();
   }
   _chooseDay () {
-    this.props.onChoose(this.props.date);
+    this.props.onChoose && this.props.onChoose(this.props.date);
   }
   _statusCheck (props) {
     const {

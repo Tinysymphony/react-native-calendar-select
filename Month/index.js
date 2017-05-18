@@ -44,7 +44,7 @@ export default class Month extends Component {
     let m = month.month();
     let year = today.year();
     if (year === y) {
-      return Month.I18N_MAP[i18n][m]
+      return Month.I18N_MAP[i18n][m];
     } else {
       if (i18n === 'en') {
         return `${Month.I18N_MAP[i18n][m]}, ${y}`;
@@ -63,7 +63,7 @@ export default class Month extends Component {
         empty: date.clone().subtract(1, 'h')
       });
     }
-    while(date.month() === month) {
+    while (date.month() === month) {
       dayList.push({
         date: date.clone()
       });
