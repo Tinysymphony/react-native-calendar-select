@@ -1,4 +1,4 @@
-## react-native-calendar-select
+## react-native-calendar-select [![Build Status](https://travis-ci.org/Tinysymphony/react-native-calendar-select.svg?branch=master)](https://travis-ci.org/Tinysymphony/react-native-calendar-select) [![Coverage Status](https://coveralls.io/repos/github/Tinysymphony/react-native-calendar-select/badge.svg?branch=master)](https://coveralls.io/github/Tinysymphony/react-native-calendar-select?branch=master)
 
 A date picker component like Airbnb. You can select a date period from the calendar modal.
 
@@ -25,6 +25,7 @@ A date picker component like Airbnb. You can select a date period from the calen
 <a href="#a-jp" id="a-jp"><img src="http://7xjgb0.com1.z0.glb.clouddn.com/git-a-jp.gif" width="200"></a>
 
 
+
 ### Usage
 
 
@@ -46,10 +47,11 @@ import Calendar from 'react-native-calendar-select';
 constructor (props) {
   super(props);
   this.state = {
-    startDate: '20170712',
-    endDate: '20170820'
+    startDate: new Date(2017, 6, 12),  
+    endDate: new Date(2017, 8, 2)
   };
   this.confirmDate = this.confirmDate.bind(this);
+  this.openCalendar = this.openCalendar.bind(this);
 }
 // when confirm button is clicked, an object is conveyed to outer component
 // contains following property:
@@ -60,6 +62,9 @@ confirmDate({startDate, endDate, startMoment, endMoment}) {
     startDate,
     endDate
   });
+}
+openCalendar() {
+  this.calendar && this.calendar.open();
 }
 // in render function
 render() {
@@ -81,17 +86,21 @@ render() {
     subColor: '#f0f0f0'
   };
   return (
-    <Calendar
-      i18n="en"
-      customI18n={customI18n}
-      color={color}
-      format="YYYYMMDD"
-      minDate="20170510"
-      maxDate="20180312"
-      startDate={this.state.startDate}
-      endDate={this.state.endDate}
-      onConfirm={this.confirmDate}
-    />
+    <View>
+      <Button title="Open Calendar" onPress={this.openCalendar}>
+      <Calendar
+        i18n="en"
+        ref={(calendar) => {this.calendar = calendar;}}
+        customI18n={customI18n}
+        color={color}
+        format="YYYYMMDD"
+        minDate="20170510"
+        maxDate="20180312"
+        startDate={this.state.startDate}
+        endDate={this.state.endDate}
+        onConfirm={this.confirmDate}
+      />
+    </View>
   );
 }
 ```

@@ -17,8 +17,8 @@ export default class calendar extends Component {
     super(props);
     this.calendar = null;
     this.state = {
-      startDate: new Date(2017, 6, 12),
-      endDate: new Date(2017, 7, 23)
+      startDate: new Date(2017, 7, 12),
+      endDate: new Date(2017, 8, 23)
     };
     this.openCalendar = this.openCalendar.bind(this);
     this.confirmDate = this.confirmDate.bind(this);
@@ -53,8 +53,7 @@ export default class calendar extends Component {
     };
     // optional property, too.
     let color = {
-      subColor: '#f4d329',
-      mainColor: '#47464b'
+      mainColor: '#138691'
     };
     const {
       startDate,
@@ -69,7 +68,7 @@ export default class calendar extends Component {
           title="press"
           onPress={this.openCalendar}
           >
-          <Text style={styles.btnFont}>选 择</Text>
+          <Text style={styles.btnFont}>Choose Dates</Text>
         </TouchableHighlight>
         <View>
           <Text style={styles.font}>{text}</Text>
@@ -80,7 +79,7 @@ export default class calendar extends Component {
           ref={(calendar) => {this.calendar = calendar;}}
           format="YYYYMMDD"
           minDate="20170510"
-          maxDate="20180812"
+          maxDate="20180412"
           startDate={this.state.startDate}
           endDate={this.state.endDate}
           onConfirm={this.confirmDate}
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 6,
     marginBottom: 30,
-    backgroundColor: '#db9c0e'
+    backgroundColor: '#138691'
   },
   btnFont: {
     color: '#fff',
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
   font: {
     fontSize: 24,
     fontWeight: '400',
-    color: '#11a4e3'
+    color: '#304853'
   },
   instructions: {
     textAlign: 'center',

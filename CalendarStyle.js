@@ -68,7 +68,7 @@ export default StyleSheet.create({
   weekText: {
     flex: 1,
     fontSize: weekTextFontSize,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   scroll: {
     flex: 9,
