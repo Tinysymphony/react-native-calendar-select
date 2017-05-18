@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   View,
   Text,
@@ -15,7 +17,7 @@ import Month from '../Month';
 import MonthList from '../MonthList';
 
 let start = {};
-let end = {}
+let end = {};
 let color = {
   mainColor: '#15aaaa',
   subColor: '#fff',
@@ -31,7 +33,7 @@ let cal = shallow(
     maxDate="20171104"
     startDate="20170512"
     endDate="20170520"
-    onConfirm={({startDate, endDate}) => {start = startDate; end = endDate}}
+    onConfirm={({startDate, endDate}) => {start = startDate; end = endDate;}}
   />
 );
 
