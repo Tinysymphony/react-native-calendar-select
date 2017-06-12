@@ -45,7 +45,8 @@ export default class Calendar extends Component {
         'end': '结 束',
         'date': '日 期',
         'save': '保 存',
-        'clear': '清除'
+        'clear': '清除',
+        'selected': '选'
       },
       'date': 'M月D日'
     },
@@ -57,7 +58,8 @@ export default class Calendar extends Component {
         'end': 'End',
         'date': 'Date',
         'save': 'Save',
-        'clear': 'Reset'
+        'clear': 'Reset',
+        'selected': 'Selected'
       },
       'date': 'DD / MM'
     },
@@ -69,7 +71,8 @@ export default class Calendar extends Component {
         'end': 'エンド',
         'date': '時　間',
         'save': '確　認',
-        'clear': 'クリア'
+        'clear': 'クリア',
+        'selected': '選択'
       },
       'date': 'M月D日'
     }
@@ -207,6 +210,7 @@ export default class Calendar extends Component {
       endWeekdayText: ''
     });
   }
+  
   confirm () {
     const {
       startDate,
@@ -221,6 +225,57 @@ export default class Calendar extends Component {
       endMoment
     });
     this.close();
+  }
+  _renderReturn(){
+     const {
+      startDate,
+      endDate,
+      startDateText,
+      startWeekdayText,
+      endDateText,
+      endWeekdayText
+    } = this.state;
+     const {
+      mainColor = '#15aaaa',
+      subColor = '#fff',
+      borderColor = 'rgba(255, 255, 255, 0.50)'
+    } = this.props.color;
+    let color = {mainColor, subColor, borderColor};
+    let subFontColor = {color: subColor};
+    let subBack = {backgroundColor: subColor};
+    if(this.props.singleDate==true){
+      return ( <View style={styles.result}>
+            
+            <View style={styles.resultPart}>
+              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+                {endDateText || this._i18n('selected', 'text')}
+              </Text>
+              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+                {endWeekdayText || this._i18n('date', 'text')}
+              </Text>
+            </View>
+          </View>)
+    }else{
+    return ( <View style={styles.result}>
+            <View style={styles.resultPart}>
+              <Text style={[styles.resultText, styles.startText, subFontColor]}>
+                {startDateText || this._i18n('start', 'text')}
+              </Text>
+              <Text style={[styles.resultText, styles.startText, subFontColor]}>
+                {startWeekdayText || this._i18n('date', 'text')}
+              </Text>
+            </View>
+            <View style={[styles.resultSlash, subBack]}/>
+            <View style={styles.resultPart}>
+              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+                {endDateText || this._i18n('end', 'text')}
+              </Text>
+              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+                {endWeekdayText || this._i18n('date', 'text')}
+              </Text>
+            </View>
+          </View>)
+    }
   }
   render () {
     const {
@@ -266,25 +321,7 @@ export default class Calendar extends Component {
               <Text style={[styles.clearText, subFontColor]}>{this._i18n('clear', 'text')}</Text>
             </TouchableHighlight>}
           </View>
-          <View style={styles.result}>
-            <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.startText, subFontColor]}>
-                {startDateText || this._i18n('start', 'text')}
-              </Text>
-              <Text style={[styles.resultText, styles.startText, subFontColor]}>
-                {startWeekdayText || this._i18n('date', 'text')}
-              </Text>
-            </View>
-            <View style={[styles.resultSlash, subBack]}/>
-            <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.endText, subFontColor]}>
-                {endDateText || this._i18n('end', 'text')}
-              </Text>
-              <Text style={[styles.resultText, styles.endText, subFontColor]}>
-                {endWeekdayText || this._i18n('date', 'text')}
-              </Text>
-            </View>
-          </View>
+          {this._renderReturn()}
           <View style={styles.week}>
             {[7, 1, 2, 3, 4, 5, 6].map(item =>
               <Text style={[styles.weekText, subFontColor]}　key={item}>{this._i18n(item, 'w')}</Text>
