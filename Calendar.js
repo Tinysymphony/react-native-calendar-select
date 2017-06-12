@@ -25,6 +25,7 @@ export default class Calendar extends Component {
     format: PropTypes.string,
     customI18n: PropTypes.object,
     color: PropTypes.object,
+    singleDate: PropTypes.bool,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
   }
@@ -32,7 +33,8 @@ export default class Calendar extends Component {
     format: 'YYYY-MM-DD',
     i18n: 'en',
     customI18n: {},
-    color: {}
+    color: {},
+    singleDate:false
   }
   static I18N_MAP = {
     'zh': {
@@ -153,6 +155,16 @@ export default class Calendar extends Component {
       startDate,
       endDate
     } = this.state;
+    if(this.props.singleDate==true){
+      this.setState({
+        startDate: day,
+        startDateText: this._i18n(day, 'date'),
+        startWeekdayText: this._i18n(day.isoWeekday(), 'weekday'),
+        endDate: day,
+        endDateText: this._i18n(day, 'date'),
+        endWeekdayText: this._i18n(day.isoWeekday(), 'weekday')
+      });
+    }else{
     if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
       this.setState({
         startDate: day,
@@ -168,6 +180,7 @@ export default class Calendar extends Component {
         endDateText: this._i18n(day, 'date'),
         endWeekdayText: this._i18n(day.isoWeekday(), 'weekday')
       });
+    }
     }
   }
   cancel () {
@@ -228,11 +241,11 @@ export default class Calendar extends Component {
     let subBack = {backgroundColor: subColor};
     let mainFontColor = {color: mainColor};
     let subFontColor = {color: subColor};
-    let isValid = !startDate || endDate;
+    let isValid = (this.props.singleDate==true)? startDate!=null : !startDate || endDate;
     let isClearVisible = startDate || endDate;
     return (
       <Modal
-        animationType={'slide'}
+        animationType={'none'}
         visible={this.state.isModalVisible}
         onRequestClose={this.close}>
         <View style={[styles.container, mainBack]}>
