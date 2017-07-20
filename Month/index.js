@@ -14,6 +14,12 @@ import styles from './style';
 import Day from '../Day';
 
 export default class Month extends Component {
+  static propTypes = {
+    firstWeekday: PropTypes.number
+  }
+  static defaultProps = {
+    firstWeekday: 7
+  }
   constructor (props) {
     super(props);
     this._getDayList = this._getDayList.bind(this);
