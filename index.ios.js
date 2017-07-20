@@ -40,14 +40,15 @@ export default class calendar extends Component {
   render() {
     // It's an optional property, I use this to show the structure of customI18n object.
     let customI18n = {
-      'w': ['', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-      'weekday': ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      'w': ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+      'm': ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      'weekday': ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
       'text': {
-        'start': 'Check in',
-        'end': 'Check out',
-        'date': 'Date',
-        'save': 'Confirm',
-        'clear': 'Reset'
+        'start': 'Entrada',
+        'end': 'Salida',
+        'date': 'Fecha',
+        'save': 'Confirmar',
+        'clear': 'Limpiar'
       },
       'date': 'DD / MM'  // date format
     };
@@ -74,9 +75,9 @@ export default class calendar extends Component {
           <Text style={styles.font}>{text}</Text>
         </View>
         <Calendar
-          i18n="en"
           color={color}
           ref={(calendar) => {this.calendar = calendar;}}
+          customI18n={customI18n}
           format="YYYYMMDD"
           minDate="20170510"
           maxDate="20180412"

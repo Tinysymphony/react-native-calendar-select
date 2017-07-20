@@ -21,7 +21,6 @@ const ICON = {
 };
 export default class Calendar extends Component {
   static propTypes = {
-    i18n: PropTypes.string,
     format: PropTypes.string,
     customI18n: PropTypes.object,
     color: PropTypes.object,
@@ -30,47 +29,20 @@ export default class Calendar extends Component {
   }
   static defaultProps = {
     format: 'YYYY-MM-DD',
-    i18n: 'en',
     customI18n: {},
     color: {}
   }
-  static I18N_MAP = {
-    'zh': {
-      'w': ['', '一', '二', '三', '四', '五', '六', '日'],
-      'weekday': ['', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
-      'text': {
-        'start': '开 始',
-        'end': '结 束',
-        'date': '日 期',
-        'save': '保 存',
-        'clear': '清除'
-      },
-      'date': 'M月D日'
+  static DEFAULT_I18N_MAP = {
+    'w': ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+    'weekday': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'text': {
+      'start': 'Start',
+      'end': 'End',
+      'date': 'Date',
+      'save': 'Save',
+      'clear': 'Reset'
     },
-    'en': {
-      'w': ['', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-      'weekday': ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      'text': {
-        'start': 'Start',
-        'end': 'End',
-        'date': 'Date',
-        'save': 'Save',
-        'clear': 'Reset'
-      },
-      'date': 'DD / MM'
-    },
-    'jp': {
-      'w': ['', '月', '火', '水', '木', '金', '土', '日'],
-      'weekday': ['', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
-      'text': {
-        'start': 'スタート',
-        'end': 'エンド',
-        'date': '時　間',
-        'save': '確　認',
-        'clear': 'クリア'
-      },
-      'date': 'M月D日'
-    }
+    'date': 'DD / MM'
   }
   constructor (props) {
     super(props);
@@ -95,14 +67,13 @@ export default class Calendar extends Component {
   }
   _i18n (data, type) {
     const {
-      i18n,
       customI18n
     } = this.props;
     if (~['w', 'weekday', 'text'].indexOf(type)) {
-      return (customI18n[type] || {})[data] || Calendar.I18N_MAP[i18n][type][data];
+      return (customI18n[type] || {})[data] || Calendar.DEFAULT_I18N_MAP[type][data];
     }
     if (type === 'date') {
-      return data.format(customI18n[type] || Calendar.I18N_MAP[i18n][type]);
+      return data.format(customI18n[type] || Calendar.DEFAULT_I18N_MAP[type]);
     }
   }
   _resetCalendar () {
@@ -118,11 +89,14 @@ export default class Calendar extends Component {
     this.setState({
       startDate: isStartValid ? start : null,
       startDateText: isStartValid ? this._i18n(start, 'date') : '',
-      startWeekdayText: isStartValid ? this._i18n(start.isoWeekday(), 'weekday') : '',
+      startWeekdayText: isStartValid ? this._i18n(this._getIsoWeekdayForI18n(start), 'weekday') : '',
       endDate: isEndValid ? end: null,
       endDateText: isEndValid ? this._i18n(end, 'date') : '',
-      endWeekdayText: isEndValid ? this._i18n(end.isoWeekday(), 'weekday') : ''
+      endWeekdayText: isEndValid ? this._i18n(this._getIsoWeekdayForI18n(end), 'weekday') : ''
     });
+  }
+  _getIsoWeekdayForI18n (day) {
+    return day.isoWeekday() - 1;
   }
   _getDateRange () {
     const {
@@ -158,7 +132,7 @@ export default class Calendar extends Component {
         startDate: day,
         endDate: null,
         startDateText: this._i18n(day, 'date'),
-        startWeekdayText: this._i18n(day.isoWeekday(), 'weekday'),
+        startWeekdayText: this._i18n(this._getIsoWeekdayForI18n(day), 'weekday'),
         endDateText: '',
         endWeekdayText: '',
       });
@@ -166,7 +140,7 @@ export default class Calendar extends Component {
       this.setState({
         endDate: day,
         endDateText: this._i18n(day, 'date'),
-        endWeekdayText: this._i18n(day.isoWeekday(), 'weekday')
+        endWeekdayText: this._i18n(this._getIsoWeekdayForI18n(day), 'weekday')
       });
     }
   }
@@ -285,7 +259,7 @@ export default class Calendar extends Component {
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               onChoose={this._onChoose}
-              i18n={this.props.i18n}
+              customI18n={this.props.customI18n}
               color={color}
             />
           </View>
