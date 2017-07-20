@@ -33,6 +33,7 @@ export default class Calendar extends Component {
     color: {}
   }
   static DEFAULT_I18N_MAP = {
+    'firstWeekday': 7,
     'w': ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
     'weekday': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     'text': {
@@ -55,6 +56,7 @@ export default class Calendar extends Component {
     this._getDateRange = this._getDateRange.bind(this);
     this._onChoose = this._onChoose.bind(this);
     this._resetCalendar = this._resetCalendar.bind(this);
+    this._getFirstWeekday = this._getFirstWeekday.bind(this);
     this.close = this.close.bind(this);
     this.cancel = this.cancel.bind(this);
     this.open = this.open.bind(this);
@@ -143,6 +145,26 @@ export default class Calendar extends Component {
         endWeekdayText: this._i18n(this._getIsoWeekdayForI18n(day), 'weekday')
       });
     }
+  }
+  _getFirstWeekday () {
+    let defaultFirstWeekday = Calendar.DEFAULT_I18N_MAP['firstWeekday'];
+    let firstWeekday = this.props.customI18n['firstWeekday'] || defaultFirstWeekday;
+    return ((firstWeekday <= 7) ? firstWeekday : defaultFirstWeekday);
+  }
+  _getWeeknums () {
+    let firstWeekday = this._getFirstWeekday();
+    if (firstWeekday > 7) {
+      firstWeekday = Calendar.DEFAULT_I18N_MAP['firstWeekday'];;
+    }
+    let days = [];
+    for (let i = 0; i < 7; i++) {
+      days.push(firstWeekday - 1);
+      firstWeekday++;
+      if (firstWeekday > 7) {
+        firstWeekday = 1;
+      }
+    }
+    return days;
   }
   cancel () {
     this.close();
@@ -247,13 +269,14 @@ export default class Calendar extends Component {
             </View>
           </View>
           <View style={styles.week}>
-            {[7, 1, 2, 3, 4, 5, 6].map(item =>
+            {this._getWeeknums().map(item =>
               <Text style={[styles.weekText, subFontColor]}　key={item}>{this._i18n(item, 'w')}</Text>
             )}
           </View>
           <View style={[styles.scroll, {borderColor}]}>
             <MonthList
               today={this._today}
+              firstWeekday={this._getFirstWeekday()}
               minDate={this._minDate}
               maxDate={this._maxDate}
               startDate={this.state.startDate}

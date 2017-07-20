@@ -48,10 +48,17 @@ export default class Month extends Component {
     let dayList;
     let month = date.month();
     let weekday = date.isoWeekday();
-    if (weekday === 7) {
+    let firstWeekday = this.props.firstWeekday;
+    if (weekday === firstWeekday) {
       dayList = [];
     } else {
-      dayList = new Array(weekday).fill({
+      let arrayLength;
+      if (weekday > firstWeekday) {
+        arrayLength = Math.abs(weekday - firstWeekday);
+      } else {
+        arrayLength = 7 - Math.abs(weekday - firstWeekday);
+      }
+      dayList = new Array(arrayLength).fill({
         empty: date.clone().subtract(1, 'h')
       });
     }
@@ -63,12 +70,12 @@ export default class Month extends Component {
     }
     date.subtract(1, 'days');
     weekday = date.isoWeekday();
-    if (weekday === 7) {
+    if (weekday === firstWeekday) {
       return dayList.concat(new Array(6).fill({
         empty: date.clone().hour(1)
       }));
     }
-    return dayList.concat(new Array(Math.abs(weekday - 6)).fill({
+    return dayList.concat(new Array(Math.abs((weekday - firstWeekday) - 6)).fill({
       empty: date.clone().hour(1)
     }));
   }

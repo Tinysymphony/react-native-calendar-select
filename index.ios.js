@@ -40,6 +40,7 @@ export default class calendar extends Component {
   render() {
     // It's an optional property, I use this to show the structure of customI18n object.
     let customI18n = {
+      'firstWeekday': 1,
       'w': ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
       'm': ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       'weekday': ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
