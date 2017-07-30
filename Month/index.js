@@ -76,14 +76,23 @@ export default class Month extends Component {
     }
     date.subtract(1, 'days');
     weekday = date.isoWeekday();
+    let endList;
     if (weekday === firstWeekday) {
-      return dayList.concat(new Array(6).fill({
+      endList = new Array(6).fill({
         empty: date.clone().hour(1)
-      }));
+      });
+    } else {
+      let arrayLength;
+      if (weekday > firstWeekday) {
+        arrayLength = Math.abs((weekday - firstWeekday) - 6);
+      } else {
+        arrayLength = Math.abs(weekday - firstWeekday) - 1;
+      }
+      endList = new Array(arrayLength).fill({
+        empty: date.clone().hour(1)
+      });
     }
-    return dayList.concat(new Array(Math.abs((weekday - firstWeekday) - 6)).fill({
-      empty: date.clone().hour(1)
-    }));
+    return dayList.concat(endList);
   }
   _renderDayRow (dayList, index) {
     const {
