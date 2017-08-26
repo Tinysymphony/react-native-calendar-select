@@ -15,7 +15,11 @@ import { customStylesProvider } from '../CustomStylesProvider';
 
 export default class Day extends Component {
   static propTypes = {
-    onChoose: PropTypes.func
+    onChoose: PropTypes.func,
+    customStyles: PropTypes.object
+  }
+  static defaultProps = {
+    customStyles: {}
   }
   constructor (props) {
     super(props);

@@ -16,10 +16,12 @@ import { customStylesProvider } from '../CustomStylesProvider';
 
 export default class Month extends Component {
   static propTypes = {
-    firstWeekday: PropTypes.number
+    firstWeekday: PropTypes.number,
+    customStyles: PropTypes.object
   }
   static defaultProps = {
-    firstWeekday: 7
+    firstWeekday: 7,
+    customStyles: {}
   }
   constructor (props) {
     super(props);
