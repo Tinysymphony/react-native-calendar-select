@@ -57,6 +57,41 @@ export default class calendar extends Component {
     let color = {
       mainColor: '#138691'
     };
+    // custom styles
+    let customStyles = {
+      clearText : {
+        fontFamily: 'Damascus'
+      },
+      selectedDate : {
+        fontFamily: 'Arial'
+      },
+      selectedDateDayName : {
+        fontFamily: 'Damascus'
+      },
+      weekDay : {
+        fontFamily: 'Damascus'
+      },
+      monthName : {
+        fontFamily: 'Damascus',
+        fontSize: 20
+      },
+      validDay : {
+        fontFamily: 'Arial'
+      },
+      invalidDay : {
+        fontFamily: 'Arial'
+      },
+      confirmBtnWrapper : {
+        flex : 2,
+      },
+      confirmBtn : {
+        borderRadius: 0,
+      },
+      confirmBtnText : {
+        fontFamily: 'Damascus',
+        fontWeight: 'normal'
+      }
+    };
     const {
       startDate,
       endDate
@@ -79,6 +114,7 @@ export default class calendar extends Component {
           color={color}
           ref={(calendar) => {this.calendar = calendar;}}
           customI18n={customI18n}
+          customStyles={customStyles}
           format="YYYYMMDD"
           minDate="20170510"
           maxDate="20180412"

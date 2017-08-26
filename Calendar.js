@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import styles from './CalendarStyle';
+import { customStylesProvider } from './CustomStylesProvider';
 import MonthList from './MonthList';
 const ICON = {
   close: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADGklEQVR4Xu3b3XXTMBTAcV1Leu8I3YAyAWECygSlE9BOQJmAdAK6QWGCphNQNmAE+mzZl6Mc5xzXtiLJ1r0STfLqJM3/Z9muPwTiwF9w4P3iCHAcAQ4BRDxt2/aDEOKkqqqfAPD0P2EZYy6EEJ/sbwaATVVVtwDwd9gwuQkYY+wHv9n43QcQca21vi4dARFPmqa5F0Ks+r8VEZ+UUu+HCCMAu+abpvnVj+990Z1S6rJUBBtvjHkAgLOp34iIX7XWN/1lI4Cmaa4Q0a5916tIBF+8jUHER631i5ExAqjr+gYAvnjWclEIIfHBAIh41m0CvpFeBEJofBdzqZS627sJ2IV1Xa8B4LNPQAiRFSEmfmr4b48QrkhjjJWyhxLfKwtCZPxvpdQq+DC4Ky4VIVX83hFQKkLK+CAA+6ZSRkLq+GCAEhAo4qMAciJQxUcD5ECgjJ8FwIlAHT8bgAOBI34RACUCV/xiAAoEzvgkACkRuOOTAaRAyBGfFGAJQq745ABzEHLGkwDEItgLMK5reP3zcER0ntL6ztf3LSe7MRJxAuX9/VTxZCNgxqm0E4EynhwgcnMYIVDHswDMReCIZwOIReCKZwOIOdR12wHbhVayo8Bug54Rv/soCwIpwIJ4NgQygATxLAgkAAnjyRGSA8TE27199+BFtjtQSQFi43e3qyL+bU6+Y0wGMDd+xr/NSRGSACyNz4mwGCBVfC6ERQCp43MgzAagiudGmAVAHc+JEA3AFc+FEAXAHc+BEAyQK54aIQggdzwlgheglHgqhL0ApcVTIDgBSo1PjTAJUHp8SgTXfIGH4fP2U3cuOK/euu6chJ5KI+Kt1vpq+D0jgG6yxHfnrZpuQQnxsSNBSvl2OPNl6nH5DQC82wdQUnwMAgBcSynX/bZogBLjIxA+KqV++ACcEyZKjg9AeJZSnobMGbLzbuxm8KYvZZ+3V0qdTz1y7ttfcC+fmO/wjIjnWuuNdydo39AdBu0eczu/BgDsdbgXMy24o2L/nn3wom3bFSL+kVLaFTqaMrdti/3i1/b+I8BrW6OxPQc/Av4BDSZYbnPWwJkAAAAASUVORK5CYII='
@@ -23,6 +24,7 @@ export default class Calendar extends Component {
   static propTypes = {
     format: PropTypes.string,
     customI18n: PropTypes.object,
+    customStyles: PropTypes.object,
     color: PropTypes.object,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
@@ -30,6 +32,7 @@ export default class Calendar extends Component {
   static defaultProps = {
     format: 'YYYY-MM-DD',
     customI18n: {},
+    customStyles: {},
     color: {}
   }
   static DEFAULT_I18N_MAP = {
@@ -219,6 +222,10 @@ export default class Calendar extends Component {
       subColor = '#fff',
       borderColor = 'rgba(255, 255, 255, 0.50)'
     } = this.props.color;
+    const {
+      customI18n,
+      customStyles
+    } = this.props;
     let color = {mainColor, subColor, borderColor};
     let mainBack = {backgroundColor: mainColor};
     let subBack = {backgroundColor: subColor};
@@ -246,31 +253,31 @@ export default class Calendar extends Component {
               underlayColor="transparent"
               activeOpacity={0.8}
               onPress={this.clear}>
-              <Text style={[styles.clearText, subFontColor]}>{this._i18n('clear', 'text')}</Text>
+              <Text style={[styles.clearText, subFontColor, customStylesProvider(customStyles, 'clearText')]}>{this._i18n('clear', 'text')}</Text>
             </TouchableHighlight>}
           </View>
           <View style={styles.result}>
             <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.startText, subFontColor]}>
+              <Text style={[styles.resultText, styles.startText, subFontColor, customStylesProvider(customStyles, 'selectedDate')]}>
                 {startDateText || this._i18n('start', 'text')}
               </Text>
-              <Text style={[styles.resultText, styles.startText, subFontColor]}>
+              <Text style={[styles.resultText, styles.startText, subFontColor, customStylesProvider(customStyles, 'selectedDateDayName')]}>
                 {startWeekdayText || this._i18n('date', 'text')}
               </Text>
             </View>
             <View style={[styles.resultSlash, subBack]}/>
             <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+              <Text style={[styles.resultText, styles.endText, subFontColor, customStylesProvider(customStyles, 'selectedDate')]}>
                 {endDateText || this._i18n('end', 'text')}
               </Text>
-              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+              <Text style={[styles.resultText, styles.endText, subFontColor, customStylesProvider(customStyles, 'selectedDateDayName')]}>
                 {endWeekdayText || this._i18n('date', 'text')}
               </Text>
             </View>
           </View>
           <View style={styles.week}>
             {this._getWeeknums().map(item =>
-              <Text style={[styles.weekText, subFontColor]}　key={item}>{this._i18n(item, 'w')}</Text>
+              <Text style={[styles.weekText, subFontColor, customStylesProvider(customStyles, 'weekDay')]}　key={item}>{this._i18n(item, 'w')}</Text>
             )}
           </View>
           <View style={[styles.scroll, {borderColor}]}>
@@ -282,29 +289,30 @@ export default class Calendar extends Component {
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               onChoose={this._onChoose}
-              customI18n={this.props.customI18n}
+              customI18n={customI18n}
+              customStyles={customStyles}
               color={color}
             />
           </View>
-          <View style={styles.btn}>
+          <View style={[styles.btn, customStylesProvider(customStyles, 'confirmBtnWrapper')]}>
             {isValid ?
               <TouchableHighlight
                 underlayColor="rgba(255, 255, 255, 0.45)"
-                style={styles.confirmContainer}
+                style={[styles.confirmContainer, customStylesProvider(customStyles, 'confirmBtn')]}
                 onPress={this.confirm}>
                 <View style={styles.confirmBtn}>
                   <Text
                     ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, subFontColor]}>
+                    style={[styles.confirmText, subFontColor, customStylesProvider(customStyles, 'confirmBtnText')]}>
                     {this._i18n('save', 'text')}
                   </Text>
                 </View>
               </TouchableHighlight> :
-              <View style={[styles.confirmContainer, styles.confirmContainerDisabled]}>
+              <View style={[styles.confirmContainer, styles.confirmContainerDisabled, customStylesProvider(customStyles, 'confirmBtn')]}>
                 <View style={styles.confirmBtn}>
                   <Text
                     ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, styles.confirmTextDisabled]}>
+                    style={[styles.confirmText, styles.confirmTextDisabled, customStylesProvider(customStyles, 'confirmBtnText')]}>
                     {this._i18n('save', 'text')}
                   </Text>
                 </View>

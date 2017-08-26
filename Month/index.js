@@ -12,6 +12,7 @@ import {
 import Moment from 'moment';
 import styles from './style';
 import Day from '../Day';
+import { customStylesProvider } from '../CustomStylesProvider';
 
 export default class Month extends Component {
   static propTypes = {
@@ -116,7 +117,8 @@ export default class Month extends Component {
     const {
       month,
       today,
-      color
+      color,
+      customStyles
     } = this.props;
     let subColor = {color: color.subColor};
     let titleText = this._getMonthText();
@@ -125,7 +127,7 @@ export default class Month extends Component {
     return (
       <View style={styles.month}>
         <View style={styles.monthTitle}>
-          <Text style={[styles.monthTitleText, subColor]}>{titleText}</Text>
+          <Text style={[styles.monthTitleText, subColor, customStylesProvider(customStyles, 'monthName')]}>{titleText}</Text>
         </View>
         <View style={styles.days}>
           {rowArray.map((item, i) =>
