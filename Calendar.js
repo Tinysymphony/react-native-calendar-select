@@ -8,6 +8,7 @@ import {
   Text,
   Modal,
   Image,
+  Alert,
   StyleSheet,
   ScrollView,
   Dimensions,
@@ -25,6 +26,7 @@ export default class Calendar extends Component {
     format: PropTypes.string,
     customI18n: PropTypes.object,
     customStyles: PropTypes.object,
+    dateRangeValidator: PropTypes.object,
     color: PropTypes.object,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
@@ -33,6 +35,7 @@ export default class Calendar extends Component {
     format: 'YYYY-MM-DD',
     customI18n: {},
     customStyles: {},
+    dateRangeValidator: null,
     color: {}
   }
   static DEFAULT_I18N_MAP = {
@@ -200,6 +203,16 @@ export default class Calendar extends Component {
     } = this.state;
     let startMoment = startDate ? startDate.clone() : null;
     let endMoment = endDate ? endDate.clone() : null;
+    if (startMoment != null && endMoment != null && this.props.dateRangeValidator != null) {
+      const daysBetween = endMoment.diff(startMoment, 'days');
+      if (daysBetween < (this.props.dateRangeValidator.minDaysBetween || 1)
+       || daysBetween > (this.props.dateRangeValidator.maxDaysBetween || 30)) {
+        Alert.alert(
+          this.props.dateRangeValidator.msg || 'Invalid range'
+        );
+        return false;
+      }
+    }
     this.props.onConfirm && this.props.onConfirm({
       startDate: startMoment ? startMoment.toDate() : null,
       endDate: endMoment ? endMoment.toDate() : null,

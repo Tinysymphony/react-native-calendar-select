@@ -92,6 +92,11 @@ export default class calendar extends Component {
         fontWeight: 'normal'
       }
     };
+    let dateRangeValidator = {
+      minDaysBetween : 1,
+      maxDaysBetween : 30,
+      msg : 'Invalid custom range'
+    };
     const {
       startDate,
       endDate
@@ -115,6 +120,7 @@ export default class calendar extends Component {
           ref={(calendar) => {this.calendar = calendar;}}
           customI18n={customI18n}
           customStyles={customStyles}
+          dateRangeValidator={dateRangeValidator}
           format="YYYYMMDD"
           minDate="20170510"
           maxDate="20180412"
