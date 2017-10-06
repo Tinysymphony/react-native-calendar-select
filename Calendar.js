@@ -43,7 +43,8 @@ export default class Calendar extends Component {
         'end': '结 束',
         'date': '日 期',
         'save': '保 存',
-        'clear': '清除'
+        'clear': '清除',
+        'cancel':'取消'
       },
       'date': 'M月D日'
     },
@@ -55,7 +56,8 @@ export default class Calendar extends Component {
         'end': 'End',
         'date': 'Date',
         'save': 'Save',
-        'clear': 'Reset'
+        'clear': 'Reset',
+        'cancel': 'Cancel'
       },
       'date': 'DD / MM'
     },
@@ -67,7 +69,8 @@ export default class Calendar extends Component {
         'end': 'エンド',
         'date': '時　間',
         'save': '確　認',
-        'clear': 'クリア'
+        'clear': 'クリア',
+        'cancel':'キャンセル'
       },
       'date': 'M月D日'
     }
@@ -293,26 +296,38 @@ export default class Calendar extends Component {
             {isValid ?
               <TouchableHighlight
                 underlayColor="rgba(255, 255, 255, 0.45)"
-                style={styles.confirmContainer}
+                style={styles.buttonContainer}
                 onPress={this.confirm}>
-                <View style={styles.confirmBtn}>
+                <View style={styles.buttonTextContainer}>
                   <Text
                     ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, subFontColor]}>
+                    style={[styles.buttonText, subFontColor]}>
                     {this._i18n('save', 'text')}
                   </Text>
                 </View>
               </TouchableHighlight> :
-              <View style={[styles.confirmContainer, styles.confirmContainerDisabled]}>
-                <View style={styles.confirmBtn}>
+              <View style={[styles.buttonContainer, styles.confirmContainerDisabled]}>
+                <View style={styles.buttonTextContainer}>
                   <Text
                     ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, styles.confirmTextDisabled]}>
+                    style={[styles.buttonText, styles.confirmTextDisabled]}>
                     {this._i18n('save', 'text')}
                   </Text>
                 </View>
               </View>
             }
+            <TouchableHighlight
+                underlayColor="rgba(255, 255, 255, 0.45)"
+                style={styles.buttonContainer}
+                onPress={this.cancel}>
+                <View style={styles.buttonTextContainer}>
+                  <Text
+                    ellipsisMode="tail" numberOfLines={1}
+                    style={[styles.buttonText, subFontColor]}>
+                    {this._i18n('cancel', 'text')}
+                  </Text>
+                </View>
+              </TouchableHighlight>
           </View>
         </View>
       </Modal>
