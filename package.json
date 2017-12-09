@@ -1,6 +1,6 @@
 {
 	"name": "react-native-calendar-select",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Calendar select component for react-native, like Airbnb.",
 	"main": "./Calendar.js",
 	"repository": {
@@ -23,19 +23,25 @@
 	"dependencies": {
 		"moment": "^2.18.1"
 	},
+	"peerDependencies": {
+		"prop-types": "^15.6.0",
+		"react": "^15.4.2",
+		"react-native": "^0.41.2"
+	},
 	"devDependencies": {
-		"babel-jest": "20.0.0",
-		"babel-preset-react-native": "1.9.1",
 		"coveralls": "^2.13.1",
 		"cz-conventional-changelog": "^2.0.0",
-		"enzyme": "^2.8.2",
+		"babel-jest": "21.2.0",
+		"babel-preset-react-native": "4.0.0",
+		"enzyme": "^3.2.0",
+		"enzyme-adapter-react-16": "^1.1.0",
 		"istanbul": "^0.4.5",
-		"jest": "20.0.0",
-		"react": "16.0.0-alpha.6",
-		"react-addons-test-utils": "^15.5.1",
-		"react-dom": "^15.5.4",
-		"react-native": "0.44.0",
-		"react-test-renderer": "^15.5.4"
+		"jest": "21.2.1",
+		"react": "^16.1.0",
+		"react-addons-test-utils": "^15.6.2",
+		"react-dom": "^16.2.0",
+		"react-native": "^0.50.0",
+		"react-test-renderer": "16.0.0"
 	},
 	"jest": {
 		"preset": "react-native",

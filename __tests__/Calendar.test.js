@@ -7,7 +7,8 @@ import {
   Dimensions
 } from 'react-native';
 import React from 'react';
-import {shallow} from 'enzyme';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import renderer from 'react-test-renderer';
 import Moment from 'moment';
 
@@ -15,6 +16,12 @@ import Calendar from '../Calendar';
 import Day from '../Day';
 import Month from '../Month';
 import MonthList from '../MonthList';
+
+Enzyme.configure({
+  adapter: new Adapter()
+});
+
+const shallow = Enzyme.shallow;
 
 let start = {};
 let end = {};
