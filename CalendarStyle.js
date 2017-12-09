@@ -81,9 +81,10 @@ export default StyleSheet.create({
   btn: {
     flex: 1.5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection:'row'
   },
-  confirmContainer: {
+  buttonContainer: {
     overflow: 'hidden',
     backgroundColor: 'rgba(255, 255, 255, 0.40)',
     borderRadius: 4,
@@ -95,7 +96,7 @@ export default StyleSheet.create({
   confirmContainerDisabled: {
     backgroundColor: 'rgba(255, 255, 255, 0.20)'
   },
-  confirmText: {
+  buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center'
