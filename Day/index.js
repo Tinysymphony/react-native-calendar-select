@@ -13,10 +13,15 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import styles from './style';
+import { customStylesProvider } from '../CustomStylesProvider';
 
 export default class Day extends Component {
   static propTypes = {
-    onChoose: PropTypes.func
+    onChoose: PropTypes.func,
+    customStyles: PropTypes.object
+  }
+  static defaultProps = {
+    customStyles: {}
   }
   constructor (props) {
     super(props);
@@ -58,7 +63,8 @@ export default class Day extends Component {
   render () {
     const {
       date,
-      color
+      color,
+      customStyles
     } = this.props;
     let text = date ? date.date() : '';
     let mainColor = {color: color.mainColor};
@@ -79,10 +85,10 @@ export default class Day extends Component {
             style={[styles.day, this.isToday && styles.today, this.isFocus && subBack]}
             underlayColor="rgba(255, 255, 255, 0.35)"
             onPress={this._chooseDay}>
-            <Text style={[styles.dayText, subColor, this.isFocus && mainColor]}>{text}</Text>
+            <Text style={[styles.dayText, subColor, this.isFocus && mainColor, customStylesProvider(customStyles, 'validDay')]}>{text}</Text>
           </TouchableHighlight> :
           <View style={[styles.day, this.isToday && styles.today]}>
-            <Text style={styles.dayTextDisabled}>{text}</Text>
+            <Text style={[styles.dayTextDisabled, customStylesProvider(customStyles, 'invalidDay')]}>{text}</Text>
           </View>
         }
       </View>

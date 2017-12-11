@@ -14,54 +14,62 @@ import {
 import Moment from 'moment';
 import styles from './style';
 import Day from '../Day';
+import { customStylesProvider } from '../CustomStylesProvider';
 
 export default class Month extends Component {
+  static propTypes = {
+    firstWeekday: PropTypes.number,
+    customStyles: PropTypes.object
+  }
+  static defaultProps = {
+    firstWeekday: 7,
+    customStyles: {}
+  }
   constructor (props) {
     super(props);
     this._getDayList = this._getDayList.bind(this);
     this._renderDayRow = this._renderDayRow.bind(this);
     this._getMonthText = this._getMonthText.bind(this);
   }
-  static I18N_MAP = {
-    'zh': [
-      '一月', '二月', '三月', '四月', '五月', '六月',
-      '七月', '八月', '九月', '十月', '十一月', '十二月'
-    ],
-    'jp': [
-      '一月', '二月', '三月', '四月', '五月', '六月',
-      '七月', '八月', '九月', '十月', '十一月', '十二月'
-    ],
-    'en': [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ]
-  }
+  static DEFAULT_I18N_MONTH_NAMES = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+
   _getMonthText () {
     const {
       month,
       today,
-      i18n
+      customI18n
     } = this.props;
     let y = month.year();
     let m = month.month();
     let year = today.year();
+    let monthNames = Month.DEFAULT_I18N_MONTH_NAMES;
+    if (customI18n && customI18n['m']) {
+      monthNames = customI18n['m'];
+    }
     if (year === y) {
-      return Month.I18N_MAP[i18n][m];
+      return monthNames[m] || Month.DEFAULT_I18N_MONTH_NAMES[m];
     } else {
-      if (i18n === 'en') {
-        return `${Month.I18N_MAP[i18n][m]}, ${y}`;
-      }
-      return month.format('YYYY年M月');
+      return `${monthNames[m] || Month.DEFAULT_I18N_MONTH_NAMES[m]}, ${y}`;
     }
   }
   _getDayList (date) {
     let dayList;
     let month = date.month();
     let weekday = date.isoWeekday();
-    if (weekday === 7) {
+    let firstWeekday = this.props.firstWeekday;
+    if (weekday === firstWeekday) {
       dayList = [];
     } else {
-      dayList = new Array(weekday).fill({
+      let arrayLength;
+      if (weekday > firstWeekday) {
+        arrayLength = Math.abs(weekday - firstWeekday);
+      } else {
+        arrayLength = 7 - Math.abs(weekday - firstWeekday);
+      }
+      dayList = new Array(arrayLength).fill({
         empty: date.clone().subtract(1, 'h')
       });
     }
@@ -73,14 +81,23 @@ export default class Month extends Component {
     }
     date.subtract(1, 'days');
     weekday = date.isoWeekday();
-    if (weekday === 7) {
-      return dayList.concat(new Array(6).fill({
+    let endList;
+    if (weekday === firstWeekday) {
+      endList = new Array(6).fill({
         empty: date.clone().hour(1)
-      }));
+      });
+    } else {
+      let arrayLength;
+      if (weekday > firstWeekday) {
+        arrayLength = Math.abs((weekday - firstWeekday) - 6);
+      } else {
+        arrayLength = Math.abs(weekday - firstWeekday) - 1;
+      }
+      endList = new Array(arrayLength).fill({
+        empty: date.clone().hour(1)
+      });
     }
-    return dayList.concat(new Array(Math.abs(weekday - 6)).fill({
-      empty: date.clone().hour(1)
-    }));
+    return dayList.concat(endList);
   }
   _renderDayRow (dayList, index) {
     const {
@@ -104,7 +121,8 @@ export default class Month extends Component {
     const {
       month,
       today,
-      color
+      color,
+      customStyles
     } = this.props;
     let subColor = {color: color.subColor};
     let titleText = this._getMonthText();
@@ -113,7 +131,7 @@ export default class Month extends Component {
     return (
       <View style={styles.month}>
         <View style={styles.monthTitle}>
-          <Text style={[styles.monthTitleText, subColor]}>{titleText}</Text>
+          <Text style={[styles.monthTitleText, subColor, customStylesProvider(customStyles, 'monthName')]}>{titleText}</Text>
         </View>
         <View style={styles.days}>
           {rowArray.map((item, i) =>

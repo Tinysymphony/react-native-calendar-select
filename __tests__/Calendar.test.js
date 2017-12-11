@@ -33,7 +33,6 @@ let color = {
 
 let cal = shallow(
   <Calendar
-    i18n="en"
     ref="cal"
     format="YYYYMMDD"
     minDate="20161210"
@@ -121,7 +120,6 @@ let monthList = shallow(
     maxDate={maxDate}
     startDate={startDate}
     endDate={endDate}
-    i18n="en"
     onChoose={() => {}}
     color={color}
   />
@@ -158,7 +156,6 @@ test('It renders MonthList correctly', done => {
 
 let month = shallow(
   <Month
-    i18n="en"
     month={Moment('20170801', 'YYYYMMDD')}
     startDate={startDate}
     endDate={endDate}
@@ -171,7 +168,6 @@ let month = shallow(
 
 let monthAnotherYear = shallow(
   <Month
-    i18n="en"
     month={Moment('20180101', 'YYYYMMDD')}
     startDate={startDate}
     endDate={endDate}
@@ -184,7 +180,9 @@ let monthAnotherYear = shallow(
 
 let jpMonth = shallow(
   <Month
-    i18n="jp"
+    customI18n={{
+      'w': ['月', '火', '水', '木', '金', '土', '日'],
+    }}
     month={Moment('20180101', 'YYYYMMDD')}
     startDate={startDate}
     endDate={endDate}
@@ -210,7 +208,6 @@ let dateChoose = null;
 
 let dayOut = shallow(
   <Day
-    i18n="en"
     date={dateOut}
     startDate={startDate}
     endDate={endDate}
@@ -224,7 +221,6 @@ let dayOut = shallow(
 
 let dayStart = shallow(
   <Day
-    i18n="en"
     date={dateStart}
     startDate={startDate}
     endDate={endDate}
@@ -237,7 +233,6 @@ let dayStart = shallow(
 
 let dayEnd = shallow(
   <Day
-    i18n="en"
     date={dateEnd}
     startDate={startDate}
     endDate={endDate}
@@ -250,7 +245,6 @@ let dayEnd = shallow(
 
 let dayMid = shallow(
   <Day
-    i18n="en"
     date={dateMid}
     startDate={startDate}
     endDate={endDate}
@@ -263,7 +257,6 @@ let dayMid = shallow(
 
 let dayEmpty = shallow(
   <Day
-    i18n="en"
     date={null}
     empty={Moment('20170901', 'YYYYMMDD')}
     startDate={startDate}

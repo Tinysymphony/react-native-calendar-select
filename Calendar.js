@@ -10,6 +10,7 @@ import {
   Text,
   Modal,
   Image,
+  Alert,
   StyleSheet,
   ScrollView,
   Dimensions,
@@ -17,62 +18,40 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import styles from './CalendarStyle';
+import { customStylesProvider } from './CustomStylesProvider';
 import MonthList from './MonthList';
 const ICON = {
   close: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADGklEQVR4Xu3b3XXTMBTAcV1Leu8I3YAyAWECygSlE9BOQJmAdAK6QWGCphNQNmAE+mzZl6Mc5xzXtiLJ1r0STfLqJM3/Z9muPwTiwF9w4P3iCHAcAQ4BRDxt2/aDEOKkqqqfAPD0P2EZYy6EEJ/sbwaATVVVtwDwd9gwuQkYY+wHv9n43QcQca21vi4dARFPmqa5F0Ks+r8VEZ+UUu+HCCMAu+abpvnVj+990Z1S6rJUBBtvjHkAgLOp34iIX7XWN/1lI4Cmaa4Q0a5916tIBF+8jUHER631i5ExAqjr+gYAvnjWclEIIfHBAIh41m0CvpFeBEJofBdzqZS627sJ2IV1Xa8B4LNPQAiRFSEmfmr4b48QrkhjjJWyhxLfKwtCZPxvpdQq+DC4Ky4VIVX83hFQKkLK+CAA+6ZSRkLq+GCAEhAo4qMAciJQxUcD5ECgjJ8FwIlAHT8bgAOBI34RACUCV/xiAAoEzvgkACkRuOOTAaRAyBGfFGAJQq745ABzEHLGkwDEItgLMK5reP3zcER0ntL6ztf3LSe7MRJxAuX9/VTxZCNgxqm0E4EynhwgcnMYIVDHswDMReCIZwOIReCKZwOIOdR12wHbhVayo8Bug54Rv/soCwIpwIJ4NgQygATxLAgkAAnjyRGSA8TE27199+BFtjtQSQFi43e3qyL+bU6+Y0wGMDd+xr/NSRGSACyNz4mwGCBVfC6ERQCp43MgzAagiudGmAVAHc+JEA3AFc+FEAXAHc+BEAyQK54aIQggdzwlgheglHgqhL0ApcVTIDgBSo1PjTAJUHp8SgTXfIGH4fP2U3cuOK/euu6chJ5KI+Kt1vpq+D0jgG6yxHfnrZpuQQnxsSNBSvl2OPNl6nH5DQC82wdQUnwMAgBcSynX/bZogBLjIxA+KqV++ACcEyZKjg9AeJZSnobMGbLzbuxm8KYvZZ+3V0qdTz1y7ttfcC+fmO/wjIjnWuuNdydo39AdBu0eczu/BgDsdbgXMy24o2L/nn3wom3bFSL+kVLaFTqaMrdti/3i1/b+I8BrW6OxPQc/Av4BDSZYbnPWwJkAAAAASUVORK5CYII='
 };
 export default class Calendar extends Component {
   static propTypes = {
-    i18n: PropTypes.string,
     format: PropTypes.string,
     customI18n: PropTypes.object,
+    customStyles: PropTypes.object,
+    dateRangeValidator: PropTypes.object,
     color: PropTypes.object,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
   }
   static defaultProps = {
     format: 'YYYY-MM-DD',
-    i18n: 'en',
     customI18n: {},
+    customStyles: {},
+    dateRangeValidator: null,
     color: {}
   }
-  static I18N_MAP = {
-    'zh': {
-      'w': ['', '一', '二', '三', '四', '五', '六', '日'],
-      'weekday': ['', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
-      'text': {
-        'start': '开 始',
-        'end': '结 束',
-        'date': '日 期',
-        'save': '保 存',
-        'clear': '清除'
-      },
-      'date': 'M月D日'
+  static DEFAULT_I18N_MAP = {
+    'firstWeekday': 7,
+    'w': ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+    'weekday': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'text': {
+      'start': 'Start',
+      'end': 'End',
+      'date': 'Date',
+      'save': 'Save',
+      'clear': 'Reset'
     },
-    'en': {
-      'w': ['', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-      'weekday': ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      'text': {
-        'start': 'Start',
-        'end': 'End',
-        'date': 'Date',
-        'save': 'Save',
-        'clear': 'Reset'
-      },
-      'date': 'DD / MM'
-    },
-    'jp': {
-      'w': ['', '月', '火', '水', '木', '金', '土', '日'],
-      'weekday': ['', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
-      'text': {
-        'start': 'スタート',
-        'end': 'エンド',
-        'date': '時　間',
-        'save': '確　認',
-        'clear': 'クリア'
-      },
-      'date': 'M月D日'
-    }
+    'date': 'DD / MM'
   }
   constructor (props) {
     super(props);
@@ -85,6 +64,7 @@ export default class Calendar extends Component {
     this._getDateRange = this._getDateRange.bind(this);
     this._onChoose = this._onChoose.bind(this);
     this._resetCalendar = this._resetCalendar.bind(this);
+    this._getFirstWeekday = this._getFirstWeekday.bind(this);
     this.close = this.close.bind(this);
     this.cancel = this.cancel.bind(this);
     this.open = this.open.bind(this);
@@ -97,14 +77,13 @@ export default class Calendar extends Component {
   }
   _i18n (data, type) {
     const {
-      i18n,
       customI18n
     } = this.props;
     if (~['w', 'weekday', 'text'].indexOf(type)) {
-      return (customI18n[type] || {})[data] || Calendar.I18N_MAP[i18n][type][data];
+      return (customI18n[type] || {})[data] || Calendar.DEFAULT_I18N_MAP[type][data];
     }
     if (type === 'date') {
-      return data.format(customI18n[type] || Calendar.I18N_MAP[i18n][type]);
+      return data.format(customI18n[type] || Calendar.DEFAULT_I18N_MAP[type]);
     }
   }
   _resetCalendar () {
@@ -120,11 +99,14 @@ export default class Calendar extends Component {
     this.setState({
       startDate: isStartValid ? start : null,
       startDateText: isStartValid ? this._i18n(start, 'date') : '',
-      startWeekdayText: isStartValid ? this._i18n(start.isoWeekday(), 'weekday') : '',
+      startWeekdayText: isStartValid ? this._i18n(this._getIsoWeekdayForI18n(start), 'weekday') : '',
       endDate: isEndValid ? end: null,
       endDateText: isEndValid ? this._i18n(end, 'date') : '',
-      endWeekdayText: isEndValid ? this._i18n(end.isoWeekday(), 'weekday') : ''
+      endWeekdayText: isEndValid ? this._i18n(this._getIsoWeekdayForI18n(end), 'weekday') : ''
     });
+  }
+  _getIsoWeekdayForI18n (day) {
+    return day.isoWeekday() - 1;
   }
   _getDateRange () {
     const {
@@ -160,7 +142,7 @@ export default class Calendar extends Component {
         startDate: day,
         endDate: null,
         startDateText: this._i18n(day, 'date'),
-        startWeekdayText: this._i18n(day.isoWeekday(), 'weekday'),
+        startWeekdayText: this._i18n(this._getIsoWeekdayForI18n(day), 'weekday'),
         endDateText: '',
         endWeekdayText: '',
       });
@@ -168,9 +150,29 @@ export default class Calendar extends Component {
       this.setState({
         endDate: day,
         endDateText: this._i18n(day, 'date'),
-        endWeekdayText: this._i18n(day.isoWeekday(), 'weekday')
+        endWeekdayText: this._i18n(this._getIsoWeekdayForI18n(day), 'weekday')
       });
     }
+  }
+  _getFirstWeekday () {
+    let defaultFirstWeekday = Calendar.DEFAULT_I18N_MAP['firstWeekday'];
+    let firstWeekday = this.props.customI18n['firstWeekday'] || defaultFirstWeekday;
+    return ((firstWeekday <= 7) ? firstWeekday : defaultFirstWeekday);
+  }
+  _getWeeknums () {
+    let firstWeekday = this._getFirstWeekday();
+    if (firstWeekday > 7) {
+      firstWeekday = Calendar.DEFAULT_I18N_MAP['firstWeekday'];;
+    }
+    let days = [];
+    for (let i = 0; i < 7; i++) {
+      days.push(firstWeekday - 1);
+      firstWeekday++;
+      if (firstWeekday > 7) {
+        firstWeekday = 1;
+      }
+    }
+    return days;
   }
   cancel () {
     this.close();
@@ -203,6 +205,16 @@ export default class Calendar extends Component {
     } = this.state;
     let startMoment = startDate ? startDate.clone() : null;
     let endMoment = endDate ? endDate.clone() : null;
+    if (startMoment != null && endMoment != null && this.props.dateRangeValidator != null) {
+      const daysBetween = endMoment.diff(startMoment, 'days');
+      if (daysBetween < (this.props.dateRangeValidator.minDaysBetween || 1)
+       || daysBetween > (this.props.dateRangeValidator.maxDaysBetween || 30)) {
+        Alert.alert(
+          this.props.dateRangeValidator.msg || 'Invalid range'
+        );
+        return false;
+      }
+    }
     this.props.onConfirm && this.props.onConfirm({
       startDate: startMoment ? startMoment.toDate() : null,
       endDate: endMoment ? endMoment.toDate() : null,
@@ -225,6 +237,10 @@ export default class Calendar extends Component {
       subColor = '#fff',
       borderColor = 'rgba(255, 255, 255, 0.50)'
     } = this.props.color;
+    const {
+      customI18n,
+      customStyles
+    } = this.props;
     let color = {mainColor, subColor, borderColor};
     let mainBack = {backgroundColor: mainColor};
     let subBack = {backgroundColor: subColor};
@@ -252,64 +268,66 @@ export default class Calendar extends Component {
               underlayColor="transparent"
               activeOpacity={0.8}
               onPress={this.clear}>
-              <Text style={[styles.clearText, subFontColor]}>{this._i18n('clear', 'text')}</Text>
+              <Text style={[styles.clearText, subFontColor, customStylesProvider(customStyles, 'clearText')]}>{this._i18n('clear', 'text')}</Text>
             </TouchableHighlight>}
           </View>
           <View style={styles.result}>
             <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.startText, subFontColor]}>
+              <Text style={[styles.resultText, styles.startText, subFontColor, customStylesProvider(customStyles, 'selectedDate')]}>
                 {startDateText || this._i18n('start', 'text')}
               </Text>
-              <Text style={[styles.resultText, styles.startText, subFontColor]}>
+              <Text style={[styles.resultText, styles.startText, subFontColor, customStylesProvider(customStyles, 'selectedDateDayName')]}>
                 {startWeekdayText || this._i18n('date', 'text')}
               </Text>
             </View>
             <View style={[styles.resultSlash, subBack]}/>
             <View style={styles.resultPart}>
-              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+              <Text style={[styles.resultText, styles.endText, subFontColor, customStylesProvider(customStyles, 'selectedDate')]}>
                 {endDateText || this._i18n('end', 'text')}
               </Text>
-              <Text style={[styles.resultText, styles.endText, subFontColor]}>
+              <Text style={[styles.resultText, styles.endText, subFontColor, customStylesProvider(customStyles, 'selectedDateDayName')]}>
                 {endWeekdayText || this._i18n('date', 'text')}
               </Text>
             </View>
           </View>
           <View style={styles.week}>
-            {[7, 1, 2, 3, 4, 5, 6].map(item =>
-              <Text style={[styles.weekText, subFontColor]}　key={item}>{this._i18n(item, 'w')}</Text>
+            {this._getWeeknums().map(item =>
+              <Text style={[styles.weekText, subFontColor, customStylesProvider(customStyles, 'weekDay')]}　key={item}>{this._i18n(item, 'w')}</Text>
             )}
           </View>
           <View style={[styles.scroll, {borderColor}]}>
             <MonthList
               today={this._today}
+              firstWeekday={this._getFirstWeekday()}
               minDate={this._minDate}
               maxDate={this._maxDate}
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               onChoose={this._onChoose}
-              i18n={this.props.i18n}
+              customI18n={customI18n}
+              customStyles={customStyles}
               color={color}
             />
           </View>
-          <View style={styles.btn}>
+          <View style={[styles.btn, customStylesProvider(customStyles, 'confirmBtnWrapper')]}>
             {isValid ?
               <TouchableHighlight
                 underlayColor="rgba(255, 255, 255, 0.45)"
-                style={styles.confirmContainer}
+                style={[styles.confirmContainer, customStylesProvider(customStyles, 'confirmBtn')]}
                 onPress={this.confirm}>
                 <View style={styles.confirmBtn}>
                   <Text
                     ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, subFontColor]}>
+                    style={[styles.confirmText, subFontColor, customStylesProvider(customStyles, 'confirmBtnText')]}>
                     {this._i18n('save', 'text')}
                   </Text>
                 </View>
               </TouchableHighlight> :
-              <View style={[styles.confirmContainer, styles.confirmContainerDisabled]}>
+              <View style={[styles.confirmContainer, styles.confirmContainerDisabled, customStylesProvider(customStyles, 'confirmBtn')]}>
                 <View style={styles.confirmBtn}>
                   <Text
                     ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, styles.confirmTextDisabled]}>
+                    style={[styles.confirmText, styles.confirmTextDisabled, customStylesProvider(customStyles, 'confirmBtnText')]}>
                     {this._i18n('save', 'text')}
                   </Text>
                 </View>

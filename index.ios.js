@@ -40,20 +40,62 @@ export default class calendar extends Component {
   render() {
     // It's an optional property, I use this to show the structure of customI18n object.
     let customI18n = {
-      'w': ['', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-      'weekday': ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      'firstWeekday': 1,
+      'w': ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+      'm': ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      'weekday': ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
       'text': {
-        'start': 'Check in',
-        'end': 'Check out',
-        'date': 'Date',
-        'save': 'Confirm',
-        'clear': 'Reset'
+        'start': 'Entrada',
+        'end': 'Salida',
+        'date': 'Fecha',
+        'save': 'Confirmar',
+        'clear': 'Limpiar'
       },
       'date': 'DD / MM'  // date format
     };
     // optional property, too.
     let color = {
       mainColor: '#138691'
+    };
+    // custom styles
+    let customStyles = {
+      clearText : {
+        fontFamily: 'Damascus'
+      },
+      selectedDate : {
+        fontFamily: 'Arial'
+      },
+      selectedDateDayName : {
+        fontFamily: 'Damascus'
+      },
+      weekDay : {
+        fontFamily: 'Damascus'
+      },
+      monthName : {
+        fontFamily: 'Damascus',
+        fontSize: 20
+      },
+      validDay : {
+        fontFamily: 'Arial'
+      },
+      invalidDay : {
+        fontFamily: 'Arial'
+      },
+      confirmBtnWrapper : {
+        flex : 2,
+      },
+      confirmBtn : {
+        borderRadius: 0,
+      },
+      confirmBtnText : {
+        fontFamily: 'Damascus',
+        fontWeight: 'normal'
+      }
+    };
+    let dateRangeValidator = {
+      minDaysBetween : 1,
+      maxDaysBetween : 30,
+      msg : 'Invalid custom range'
     };
     const {
       startDate,
@@ -74,9 +116,11 @@ export default class calendar extends Component {
           <Text style={styles.font}>{text}</Text>
         </View>
         <Calendar
-          i18n="en"
           color={color}
           ref={(calendar) => {this.calendar = calendar;}}
+          customI18n={customI18n}
+          customStyles={customStyles}
+          dateRangeValidator={dateRangeValidator}
           format="YYYYMMDD"
           minDate="20170510"
           maxDate="20180412"
