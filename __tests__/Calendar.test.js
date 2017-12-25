@@ -65,6 +65,26 @@ let invalidDateCalC = shallow(
   />
 );
 
+let rangeConstraintWeekCal = shallow(
+  <Calendar
+    format="YYYYMMDD"
+    rangeConstraint="week"
+  />
+);
+
+test('It constrains selection to full weeks', done => {
+  let instance = rangeConstraintWeekCal.instance();
+  expect(rangeConstraintWeekCal.state('isModalVisible')).toEqual(false);
+  instance.componentDidMount();
+  instance.open();
+  instance._onChoose(Moment('20170607', 'YYYYMMDD'));
+  expect(rangeConstraintWeekCal.state('startDate').isSame(Moment('20170604', 'YYYYMMDD'))).toEqual(true);
+  expect(rangeConstraintWeekCal.state('startWeekdayText')).toEqual('Sunday');
+  expect(rangeConstraintWeekCal.state('endWeekdayText')).toEqual('Saturday');
+  expect(rangeConstraintWeekCal.state('endDate').isSame(Moment('20170610', 'YYYYMMDD').endOf('week'))).toEqual(true);
+  done();
+});
+
 test('It renders calendar correctly', done => {
   let instance = cal.instance();
   expect(cal.state('isModalVisible')).toEqual(false);

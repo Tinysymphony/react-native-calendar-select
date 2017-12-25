@@ -12,6 +12,7 @@
 		"ios": "react-native run-ios",
 		"android": "react-native run-android",
 		"test": "jest",
+		"test:watch": "jest --watch",
 		"coverage": "cat ./coverage/lcov.info | coveralls",
 		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
 	},

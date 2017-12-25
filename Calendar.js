@@ -25,6 +25,7 @@ export default class Calendar extends Component {
   static propTypes = {
     i18n: PropTypes.string,
     format: PropTypes.string,
+    rangeConstraint: PropTypes.string,
     customI18n: PropTypes.object,
     color: PropTypes.object,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
@@ -33,6 +34,7 @@ export default class Calendar extends Component {
   static defaultProps = {
     format: 'YYYY-MM-DD',
     i18n: 'en',
+    rangeConstraint: 'none',
     customI18n: {},
     color: {}
   }
@@ -155,7 +157,18 @@ export default class Calendar extends Component {
       startDate,
       endDate
     } = this.state;
-    if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
+    if (this.props.rangeConstraint === 'week') {
+      let startDay = Moment(day).startOf('week')
+      let endDay = Moment(day).endOf('week')
+      this.setState({
+        startDate: startDay,
+        endDate: endDay,
+        startDateText: this._i18n(startDay, 'date'),
+        startWeekdayText: this._i18n(startDay.isoWeekday(), 'weekday'),
+        endDateText: this._i18n(endDay, 'date'),
+        endWeekdayText: this._i18n(endDay.isoWeekday(), 'weekday')
+      });
+    } else if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
       this.setState({
         startDate: day,
         endDate: null,
