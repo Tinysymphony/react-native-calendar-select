@@ -125,9 +125,10 @@ render() {
 
 ### Color properties
 
-| Prop      | Description                               |
-| --------- | ----------------------------------------- |
-| subColor  | Sets the Text Color                       |
-| mainColor | Sets the Background Color of the Calendar |
+| Prop        | Description                               |
+| ----------- | ----------------------------------------- |
+| subColor    | Sets the Text Color                       |
+| mainColor   | Sets the Background Color of the Calendar |
+| borderColor | Sets the Color of the Calendar border     |
 
 LICENSE MIT
