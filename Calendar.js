@@ -5,16 +5,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 
-import {
-	View,
-	Text,
-	Modal,
-	Image,
-	StyleSheet,
-	ScrollView,
-	Dimensions,
-	TouchableHighlight
-} from "react-native"
+import { View, Text, Modal, Image, TouchableHighlight } from "react-native"
 import Moment from "moment"
 import styles from "./CalendarStyle"
 import MonthList from "./MonthList"
@@ -24,38 +15,39 @@ const ICON = {
 }
 export default class Calendar extends Component {
 	static propTypes = {
-		i18n: PropTypes.string,
-		format: PropTypes.string,
+		i18n      : PropTypes.string,
+		format    : PropTypes.string,
 		customI18n: PropTypes.object,
-		color: PropTypes.shape({
-			mainColor: PropTypes.string,
-			subColor: PropTypes.string,
+		color     : PropTypes.shape({
+			mainColor  : PropTypes.string,
+			subColor   : PropTypes.string,
 			borderColor: PropTypes.string
 		}),
-		minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-		maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
+		minDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+		maxDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+		selectionType: PropTypes.string
 	}
 	static defaultProps = {
-		format: "YYYY-MM-DD",
-		i18n: "en",
+		format    : "YYYY-MM-DD",
+		i18n      : "en",
 		customI18n: {},
-		color: {}
+		color     : {}
 	}
 	static I18N_MAP = {
 		zh: {
-			w: ["", "一", "二", "三", "四", "五", "六", "日"],
+			w      : ["", "一", "二", "三", "四", "五", "六", "日"],
 			weekday: ["", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-			text: {
+			text   : {
 				start: "开 始",
-				end: "结 束",
-				date: "日 期",
-				save: "保 存",
+				end  : "结 束",
+				date : "日 期",
+				save : "保 存",
 				clear: "清除"
 			},
 			date: "M月D日"
 		},
 		en: {
-			w: ["", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"],
+			w      : ["", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"],
 			weekday: [
 				"",
 				"Monday",
@@ -68,27 +60,27 @@ export default class Calendar extends Component {
 			],
 			text: {
 				start: "Start",
-				end: "End",
-				date: "Date",
-				save: "Save",
+				end  : "End",
+				date : "Date",
+				save : "Save",
 				clear: "Reset"
 			},
 			date: "DD / MM"
 		},
 		jp: {
-			w: ["", "月", "火", "水", "木", "金", "土", "日"],
+			w      : ["", "月", "火", "水", "木", "金", "土", "日"],
 			weekday: ["", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"],
-			text: {
+			text   : {
 				start: "スタート",
-				end: "エンド",
-				date: "時　間",
-				save: "確　認",
+				end  : "エンド",
+				date : "時　間",
+				save : "確　認",
 				clear: "クリア"
 			},
 			date: "M月D日"
 		}
 	}
-	constructor(props) {
+	constructor (props) {
 		super(props)
 		this.state = {
 			isModalVisible: false
@@ -106,10 +98,10 @@ export default class Calendar extends Component {
 		this.confirm = this.confirm.bind(this)
 		this._getDateRange()
 	}
-	componentDidMount() {
+	componentDidMount () {
 		this._resetCalendar()
 	}
-	_i18n(data, type) {
+	_i18n (data, type) {
 		const { i18n, customI18n } = this.props
 		if (~["w", "weekday", "text"].indexOf(type)) {
 			return (customI18n[type] || {})[data] || Calendar.I18N_MAP[i18n][type][data]
@@ -118,27 +110,27 @@ export default class Calendar extends Component {
 			return data.format(customI18n[type] || Calendar.I18N_MAP[i18n][type])
 		}
 	}
-	_resetCalendar() {
+	_resetCalendar () {
 		const { startDate, endDate, format } = this.props
-		let start = Moment(startDate, format)
-		let end = Moment(endDate, format)
-		let isStartValid = start.isValid() && start >= this._minDate && start <= this._maxDate
-		let isEndValid = end.isValid() && end >= this._minDate && end <= this._maxDate
+		const start = Moment(startDate, format)
+		const end = Moment(endDate, format)
+		const isStartValid = start.isValid() && start >= this._minDate && start <= this._maxDate
+		const isEndValid = end.isValid() && end >= this._minDate && end <= this._maxDate
 		this.setState({
-			startDate: isStartValid ? start : null,
-			startDateText: isStartValid ? this._i18n(start, "date") : "",
+			startDate       : isStartValid ? start : null,
+			startDateText   : isStartValid ? this._i18n(start, "date") : "",
 			startWeekdayText: isStartValid ? this._i18n(start.isoWeekday(), "weekday") : "",
-			endDate: isEndValid ? end : null,
-			endDateText: isEndValid ? this._i18n(end, "date") : "",
-			endWeekdayText: isEndValid ? this._i18n(end.isoWeekday(), "weekday") : ""
+			endDate         : isEndValid ? end : null,
+			endDateText     : isEndValid ? this._i18n(end, "date") : "",
+			endWeekdayText  : isEndValid ? this._i18n(end.isoWeekday(), "weekday") : ""
 		})
 	}
-	_getDateRange() {
+	_getDateRange () {
 		const { maxDate, minDate, format } = this.props
 		let max = Moment(maxDate, format)
 		let min = Moment(minDate, format)
-		let maxValid = max.isValid()
-		let minValid = min.isValid()
+		const maxValid = max.isValid()
+		const minValid = min.isValid()
 		if (!maxValid && !minValid) {
 			max = Moment().add(3, "months")
 			min = Moment()
@@ -149,67 +141,85 @@ export default class Calendar extends Component {
 		if (maxValid && !minValid) {
 			min = max.subtract(3, "months")
 		}
-		if (min.isSameOrAfter(max)) return {}
+		if (min.isSameOrAfter(max)) {
+			return {}
+		}
 		this._minDate = min
 		this._maxDate = max
 	}
-	_onChoose(day) {
+	_onChoose (day, selectionType) {
 		const { startDate, endDate } = this.state
+
+		if (selectionType === "day") {
+			if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
+				this.setState({
+					startDate       : day,
+					endDate         : day,
+					startDateText   : this._i18n(day, "date"),
+					startWeekdayText: this._i18n(day.isoWeekday(), "weekday"),
+					endDateText     : this._i18n(day, "date"),
+					endWeekdayText  : this._i18n(day.isoWeekday(), "weekday")
+				})
+			}
+
+			return
+		}
+
 		if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
 			this.setState({
-				startDate: day,
-				endDate: null,
-				startDateText: this._i18n(day, "date"),
+				startDate       : day,
+				endDate         : null,
+				startDateText   : this._i18n(day, "date"),
 				startWeekdayText: this._i18n(day.isoWeekday(), "weekday"),
-				endDateText: "",
-				endWeekdayText: ""
+				endDateText     : "",
+				endWeekdayText  : ""
 			})
 		} else if (startDate && !endDate && day > startDate) {
 			this.setState({
-				endDate: day,
-				endDateText: this._i18n(day, "date"),
+				endDate       : day,
+				endDateText   : this._i18n(day, "date"),
 				endWeekdayText: this._i18n(day.isoWeekday(), "weekday")
 			})
 		}
 	}
-	cancel() {
+	cancel () {
 		this.close()
 		this._resetCalendar()
 	}
-	close() {
+	close () {
 		this.setState({
 			isModalVisible: false
 		})
 	}
-	open() {
+	open () {
 		this.setState({
 			isModalVisible: true
 		})
 	}
-	clear() {
+	clear () {
 		this.setState({
-			startDate: null,
-			endDate: null,
-			startDateText: "",
+			startDate       : null,
+			endDate         : null,
+			startDateText   : "",
 			startWeekdayText: "",
-			endDateText: "",
-			endWeekdayText: ""
+			endDateText     : "",
+			endWeekdayText  : ""
 		})
 	}
-	confirm() {
+	confirm () {
 		const { startDate, endDate } = this.state
-		let startMoment = startDate ? startDate.clone() : null
-		let endMoment = endDate ? endDate.clone() : null
+		const startMoment = startDate ? startDate.clone() : null
+		const endMoment = endDate ? endDate.clone() : null
 		this.props.onConfirm &&
 			this.props.onConfirm({
 				startDate: startMoment ? startMoment.toDate() : null,
-				endDate: endMoment ? endMoment.toDate() : null,
+				endDate  : endMoment ? endMoment.toDate() : null,
 				startMoment,
 				endMoment
 			})
 		this.close()
 	}
-	render() {
+	render () {
 		const {
 			startDate,
 			endDate,
@@ -218,18 +228,18 @@ export default class Calendar extends Component {
 			endDateText,
 			endWeekdayText
 		} = this.state
+		const { selectionType } = this.props
 		const {
 			mainColor = "#15aaaa",
 			subColor = "#fff",
 			borderColor = "rgba(255, 255, 255, 0.50)"
 		} = this.props.color
-		let color = { mainColor, subColor, borderColor }
-		let mainBack = { backgroundColor: mainColor }
-		let subBack = { backgroundColor: subColor }
-		let mainFontColor = { color: mainColor }
-		let subFontColor = { color: subColor }
-		let isValid = !startDate || endDate
-		let isClearVisible = startDate || endDate
+		const color = { mainColor, subColor, borderColor }
+		const mainBack = { backgroundColor: mainColor }
+		const subBack = { backgroundColor: subColor }
+		const subFontColor = { color: subColor }
+		const isValid = !startDate || endDate
+		const isClearVisible = startDate || endDate
 		return (
 			<Modal
 				animationType={"slide"}
@@ -290,7 +300,7 @@ export default class Calendar extends Component {
 							maxDate={this._maxDate}
 							startDate={this.state.startDate}
 							endDate={this.state.endDate}
-							onChoose={this._onChoose}
+							onChoose={day => this._onChoose(day, selectionType)}
 							i18n={this.props.i18n}
 							color={color}
 						/>
