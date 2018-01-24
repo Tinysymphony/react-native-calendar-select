@@ -4,21 +4,25 @@ A date picker component like Airbnb. You can select a date period from the calen
 
 ### Examples
 
+#### Selection Types Example
+
+<a href="#selectionType" id="selectionType"><img src="./screenshots/selectionTypeBtns.png" width="200"></a>
+
 #### iOS Examples
 
-<a href="#ios-en" id="ios-en"><img src="./GIF/ios-en.gif" align="left" width="200"></a>
+<a href="#ios-en" id="ios-en"><img src="./screenshots/ios-en.gif" align="left" width="200"></a>
 
-<a href="#ios-zh" id="ios-zh"><img src="./GIF/ios-zh.gif" align="left" width="200"></a>
+<a href="#ios-zh" id="ios-zh"><img src="./screenshots/ios-zh.gif" align="left" width="200"></a>
 
-<a href="#ios-jp" id="ios-jp"><img src="./GIF/ios-jp.gif" width="200"></a>
+<a href="#ios-jp" id="ios-jp"><img src="./screenshots/ios-jp.gif" width="200"></a>
 
 #### Android Examples
 
-<a href="#a-en" id="a-en"><img src="./GIF/a-en.gif" align="left" width="200"></a>
+<a href="#a-en" id="a-en"><img src="./screenshots/a-en.gif" align="left" width="200"></a>
 
-<a href="#a-zh" id="a-zh"><img src="./GIF/a-zh.gif" align="left" width="200"></a>
+<a href="#a-zh" id="a-zh"><img src="./screenshots/a-zh.gif" align="left" width="200"></a>
 
-<a href="#a-jp" id="a-jp"><img src="./GIF/a-jp.gif" width="200"></a>
+<a href="#a-jp" id="a-jp"><img src="./screenshots/a-jp.gif" width="200"></a>
 
 ### Usage
 
@@ -101,17 +105,18 @@ render() {
 
 ### Properties
 
-| Property   | Type            | Default      | Description                                                                                                                                                         |
-| ---------- | --------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| i18n       | String          | 'en'         | Language of the component, supports `en` / `zh` / `jp`.                                                                                                             |
-| customI18n | Object          | {}           | Customize text of the component, the structure of this object is shown in the example above.                                                                        |
-| color      | Object          | {}           | Customize color.                                                                                                                                                    |
-| format     | string          | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
-| minDate    | String / Object | -            | Min date of calendar                                                                                                                                                |
-| maxDate    | String / Object | -            | Max date of calendar                                                                                                                                                |
-| startDate  | String / Object | null         | Start date of selection                                                                                                                                             |
-| endDate    | String / Object | null         | End date of selection                                                                                                                                               |
-| onConfirm  | Function        | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
+| Property      | Type            | Default      | Description                                                                                                                                                         |
+| ------------- | --------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| i18n          | String          | 'en'         | Language of the component, supports `en` / `zh` / `jp`.                                                                                                             |
+| customI18n    | Object          | {}           | Customize text of the component, the structure of this object is shown in the example above.                                                                        |
+| color         | Object          | {}           | Customize color.                                                                                                                                                    |
+| format        | string          | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
+| minDate       | String / Object | -            | Min date of calendar                                                                                                                                                |
+| maxDate       | String / Object | -            | Max date of calendar                                                                                                                                                |
+| startDate     | String / Object | null         | Start date of selection                                                                                                                                             |
+| endDate       | String / Object | null         | End date of selection                                                                                                                                               |
+| onConfirm     | Function        | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
+| selectionType | String          | "manual"     | Initial (optional) selection type can be one of "manual", "week" and "day"                                                                                          |
 
 ### Instance methods
 
