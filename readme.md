@@ -105,18 +105,18 @@ render() {
 
 ### Properties
 
-| Property      | Type            | Default      | Description                                                                                                                                                         |
-| ------------- | --------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| i18n          | String          | 'en'         | Language of the component, supports `en` / `zh` / `jp`.                                                                                                             |
-| customI18n    | Object          | {}           | Customize text of the component, the structure of this object is shown in the example above.                                                                        |
-| color         | Object          | {}           | Customize color.                                                                                                                                                    |
-| format        | string          | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
-| minDate       | String / Object | -            | Min date of calendar                                                                                                                                                |
-| maxDate       | String / Object | -            | Max date of calendar                                                                                                                                                |
-| startDate     | String / Object | null         | Start date of selection                                                                                                                                             |
-| endDate       | String / Object | null         | End date of selection                                                                                                                                               |
-| onConfirm     | Function        | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
-| selectionType | String          | "manual"     | Initial (optional) selection type can be one of "manual", "week" and "day"                                                                                          |
+| Property      | Type                          | Default      | Description                                                                                                                                                         |
+| ------------- | ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| i18n          | String                        | 'en'         | Language of the component, supports `en` / `zh` / `jp`.                                                                                                             |
+| customI18n    | Object                        | {}           | Customize text of the component, the structure of this object is shown in the example above.                                                                        |
+| color         | Object                        | {}           | Customize color.                                                                                                                                                    |
+| format        | string                        | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
+| minDate       | String / Object               | -            | Min date of calendar                                                                                                                                                |
+| maxDate       | String / Object               | -            | Max date of calendar                                                                                                                                                |
+| startDate     | String / Object               | null         | Start date of selection                                                                                                                                             |
+| endDate       | String / Object               | null         | End date of selection                                                                                                                                               |
+| onConfirm     | Function                      | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
+| selectionType | enum(`manual`, `week`, `day`) | "manual"     | Initial (optional) selection type can be one of `manual`, `week` and `day`                                                                                          |
 
 ### Instance methods
 
