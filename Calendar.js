@@ -28,10 +28,11 @@ export default class Calendar extends Component {
 		selectionType: PropTypes.string
 	}
 	static defaultProps = {
-		format    : "YYYY-MM-DD",
-		i18n      : "en",
-		customI18n: {},
-		color     : {}
+		format       : "YYYY-MM-DD",
+		i18n         : "en",
+		customI18n   : {},
+		color        : {},
+		selectionType: "manual"
 	}
 	static I18N_MAP = {
 		zh: {
@@ -80,10 +81,12 @@ export default class Calendar extends Component {
 			date: "M月D日"
 		}
 	}
+
 	constructor (props) {
 		super(props)
 		this.state = {
-			isModalVisible: false
+			isModalVisible: false,
+			selectionType : "manual"
 		}
 		this._today = Moment()
 		this._year = this._today.year()
@@ -92,15 +95,23 @@ export default class Calendar extends Component {
 		this._onChoose = this._onChoose.bind(this)
 		this._resetCalendar = this._resetCalendar.bind(this)
 		this.close = this.close.bind(this)
+		this.selection = this.selection.bind(this)
 		this.cancel = this.cancel.bind(this)
 		this.open = this.open.bind(this)
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this._getDateRange()
 	}
+
 	componentDidMount () {
+		const { selectionType } = this.props
 		this._resetCalendar()
+
+		this.setState({
+			selectionType
+		})
 	}
+
 	_i18n (data, type) {
 		const { i18n, customI18n } = this.props
 		if (~["w", "weekday", "text"].indexOf(type)) {
@@ -110,6 +121,7 @@ export default class Calendar extends Component {
 			return data.format(customI18n[type] || Calendar.I18N_MAP[i18n][type])
 		}
 	}
+
 	_resetCalendar () {
 		const { startDate, endDate, format } = this.props
 		const start = Moment(startDate, format)
@@ -125,6 +137,7 @@ export default class Calendar extends Component {
 			endWeekdayText  : isEndValid ? this._i18n(end.isoWeekday(), "weekday") : ""
 		})
 	}
+
 	_getDateRange () {
 		const { maxDate, minDate, format } = this.props
 		let max = Moment(maxDate, format)
@@ -147,6 +160,7 @@ export default class Calendar extends Component {
 		this._minDate = min
 		this._maxDate = max
 	}
+
 	_onChoose (day, selectionType) {
 		const { startDate, endDate } = this.state
 
@@ -160,8 +174,9 @@ export default class Calendar extends Component {
 					endDateText     : this._i18n(day, "date"),
 					endWeekdayText  : this._i18n(day.isoWeekday(), "weekday")
 				})
-			}
 
+				this.confirm({ startDate: day, endDate: day })
+			}
 			return
 		}
 
@@ -182,20 +197,44 @@ export default class Calendar extends Component {
 			})
 		}
 	}
+
+	radioBtnsStyle (_selectionType) {
+		const { color: { borderColor } } = this.props
+		const { selectionType } = this.state
+
+		const selected = selectionType === _selectionType
+		const btnColor = borderColor || "rgba(255, 255, 255, 0.5)"
+
+		return {
+			backgroundColor: selected ? btnColor : "transparent"
+		}
+	}
+
 	cancel () {
 		this.close()
 		this._resetCalendar()
 	}
+
 	close () {
 		this.setState({
 			isModalVisible: false
 		})
 	}
+
+	selection (selectionType) {
+		this.clear()
+
+		this.setState({
+			selectionType
+		})
+	}
+
 	open () {
 		this.setState({
 			isModalVisible: true
 		})
 	}
+
 	clear () {
 		this.setState({
 			startDate       : null,
@@ -206,8 +245,9 @@ export default class Calendar extends Component {
 			endWeekdayText  : ""
 		})
 	}
-	confirm () {
-		const { startDate, endDate } = this.state
+
+	confirm (state) {
+		const { startDate, endDate } = state || this.state
 		const startMoment = startDate ? startDate.clone() : null
 		const endMoment = endDate ? endDate.clone() : null
 		this.props.onConfirm &&
@@ -219,6 +259,7 @@ export default class Calendar extends Component {
 			})
 		this.close()
 	}
+
 	render () {
 		const {
 			startDate,
@@ -228,7 +269,7 @@ export default class Calendar extends Component {
 			endDateText,
 			endWeekdayText
 		} = this.state
-		const { selectionType } = this.props
+		const { selectionType } = this.state
 		const {
 			mainColor = "#15aaaa",
 			subColor = "#fff",
@@ -306,6 +347,29 @@ export default class Calendar extends Component {
 						/>
 					</View>
 					<View style={styles.btn}>
+						<View style={styles.radioBtns}>
+							<TouchableHighlight
+								style={[styles.selectionBtn, this.radioBtnsStyle("day")]}
+								underlayColor={mainColor}
+								onPress={() => this.selection("day")}
+							>
+								<Text style={[styles.clearText, subFontColor]}>Day</Text>
+							</TouchableHighlight>
+							<TouchableHighlight
+								style={[styles.selectionBtn, this.radioBtnsStyle("week")]}
+								underlayColor={mainColor}
+								onPress={() => this.selection("week")}
+							>
+								<Text style={[styles.clearText, subFontColor]}>Week</Text>
+							</TouchableHighlight>
+							<TouchableHighlight
+								style={[styles.selectionBtn, this.radioBtnsStyle("manual")]}
+								underlayColor={mainColor}
+								onPress={() => this.selection("manual")}
+							>
+								<Text style={[styles.clearText, subFontColor]}>Manual</Text>
+							</TouchableHighlight>
+						</View>
 						{isValid ? (
 							<TouchableHighlight
 								underlayColor="rgba(255, 255, 255, 0.45)"
