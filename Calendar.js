@@ -112,6 +112,14 @@ export default class Calendar extends Component {
 		})
 	}
 
+	componentDidUpdate (nextProps, nextState) {
+		const { startDate, endDate } = this.state
+
+		if (startDate && !endDate) {
+			this._onChoose(startDate, "week")
+		}
+	}
+
 	_i18n (data, type) {
 		const { i18n, customI18n } = this.props
 		if (~["w", "weekday", "text"].indexOf(type)) {
@@ -176,6 +184,28 @@ export default class Calendar extends Component {
 				})
 
 				this.confirm({ startDate: day, endDate: day })
+			}
+			return
+		}
+
+		if (selectionType === "week") {
+			if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
+				const startDay = day.clone().startOf("week")
+				this.setState({
+					startDate       : startDay,
+					endDate         : null,
+					startDateText   : this._i18n(startDay, "date"),
+					startWeekdayText: this._i18n(startDay.isoWeekday(), "weekday"),
+					endDateText     : "",
+					endWeekdayText  : ""
+				})
+			} else if (startDate && !endDate) {
+				const endDay = day.clone().endOf("week")
+				this.setState({
+					endDate       : endDay,
+					endDateText   : this._i18n(endDay, "date"),
+					endWeekdayText: this._i18n(endDay.isoWeekday(), "weekday")
+				})
 			}
 			return
 		}
@@ -247,7 +277,10 @@ export default class Calendar extends Component {
 	}
 
 	confirm (state) {
-		const { startDate, endDate } = state || this.state
+		let { startDate, endDate } = state // State is proxy coming from touchableOpacity
+		startDate = startDate || this.state.startDate
+		endDate = endDate || this.state.endDate
+
 		const startMoment = startDate ? startDate.clone() : null
 		const endMoment = endDate ? endDate.clone() : null
 		this.props.onConfirm &&
@@ -281,6 +314,7 @@ export default class Calendar extends Component {
 		const subFontColor = { color: subColor }
 		const isValid = !startDate || endDate
 		const isClearVisible = startDate || endDate
+
 		return (
 			<Modal
 				animationType={"slide"}
