@@ -115,9 +115,9 @@ export default class Calendar extends Component {
 	}
 
 	componentDidUpdate (nextProps, nextState) {
-		const { startDate, endDate } = this.state
+		const { startDate, endDate, selectionType } = this.state
 
-		if (startDate && !endDate) {
+		if (startDate && !endDate && selectionType === "week") {
 			this._onChoose(startDate, "week")
 		}
 	}
@@ -222,6 +222,9 @@ export default class Calendar extends Component {
 				endWeekdayText  : ""
 			})
 		} else if (startDate && !endDate && day > startDate) {
+			console.log("=========Running endDate=============")
+			console.log(startDate, endDate)
+			console.log("====================================")
 			this.setState({
 				endDate       : day,
 				endDateText   : this._i18n(day, "date"),
