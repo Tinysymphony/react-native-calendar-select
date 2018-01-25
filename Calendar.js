@@ -25,7 +25,7 @@ export default class Calendar extends Component {
 		}),
 		minDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
 		maxDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-		selectionType: PropTypes.oneOfType(["manual", "week", "day"])
+		selectionType: PropTypes.oneOf(["manual", "week", "day"])
 	}
 	static defaultProps = {
 		format       : "YYYY-MM-DD",
