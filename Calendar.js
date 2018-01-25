@@ -25,14 +25,16 @@ export default class Calendar extends Component {
 		}),
 		minDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
 		maxDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-		selectionType: PropTypes.oneOf(["manual", "week", "day"])
+		selectionType: PropTypes.oneOf(["manual", "week", "day"]),
+		animationType: PropTypes.oneOf(["none", "slide", "fade"])
 	}
 	static defaultProps = {
 		format       : "YYYY-MM-DD",
 		i18n         : "en",
 		customI18n   : {},
 		color        : {},
-		selectionType: "manual"
+		selectionType: "manual",
+		animationType: "slide"
 	}
 	static I18N_MAP = {
 		zh: {
@@ -300,9 +302,11 @@ export default class Calendar extends Component {
 			startDateText,
 			startWeekdayText,
 			endDateText,
-			endWeekdayText
+			endWeekdayText,
+			isModalVisible,
+			selectionType
 		} = this.state
-		const { selectionType } = this.state
+		const { animationType } = this.props
 		const {
 			mainColor = "#15aaaa",
 			subColor = "#fff",
@@ -317,8 +321,8 @@ export default class Calendar extends Component {
 
 		return (
 			<Modal
-				animationType={"slide"}
-				visible={this.state.isModalVisible}
+				animationType={animationType}
+				visible={isModalVisible}
 				onRequestClose={this.close}
 			>
 				<View style={[styles.container, mainBack]}>
