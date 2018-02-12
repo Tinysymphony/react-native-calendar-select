@@ -22,7 +22,6 @@ export default class calendar extends Component {
 	// startDate [Date Object], endDate [Date Object]
 	// startMoment [Moment Object], endMoment [Moment Object]
 	confirmDate ({ startDate, endDate, startMoment, endMoment }) {
-		console.log(startDate, endDate, startMoment, endMoment)
 		this.setState({
 			startDate,
 			endDate

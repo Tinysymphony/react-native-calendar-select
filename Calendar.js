@@ -222,9 +222,6 @@ export default class Calendar extends Component {
 				endWeekdayText  : ""
 			})
 		} else if (startDate && !endDate && day > startDate) {
-			console.log("=========Running endDate=============")
-			console.log(startDate, endDate)
-			console.log("====================================")
 			this.setState({
 				endDate       : day,
 				endDateText   : this._i18n(day, "date"),
