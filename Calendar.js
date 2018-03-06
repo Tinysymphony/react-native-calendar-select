@@ -42,6 +42,7 @@ export default class Calendar extends Component {
 			weekday: ["", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
 			text   : {
 				start: "开 始",
+				apply: "开 始",
 				end  : "结 束",
 				date : "日 期",
 				save : "保 存",
@@ -63,6 +64,7 @@ export default class Calendar extends Component {
 			],
 			text: {
 				start: "Start",
+				apply: "Apply",
 				end  : "End",
 				date : "Date",
 				save : "Save",
@@ -75,6 +77,7 @@ export default class Calendar extends Component {
 			weekday: ["", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"],
 			text   : {
 				start: "スタート",
+				apply: "スタート",
 				end  : "エンド",
 				date : "時　間",
 				save : "確　認",
@@ -420,7 +423,7 @@ export default class Calendar extends Component {
 										numberOfLines={1}
 										style={[styles.confirmText, subFontColor]}
 									>
-										{this._i18n("save", "text")}
+										{this._i18n("apply", "text")}
 									</Text>
 								</View>
 							</TouchableHighlight>
@@ -434,7 +437,7 @@ export default class Calendar extends Component {
 										numberOfLines={1}
 										style={[styles.confirmText, styles.confirmTextDisabled]}
 									>
-										{this._i18n("save", "text")}
+										{this._i18n("apply", "text")}
 									</Text>
 								</View>
 							</View>
