@@ -185,7 +185,7 @@ export default class Calendar extends Component {
             underlayColor="rgba(255, 255, 255, 0.45)"
             style={styles.confirmContainer}
             onPress={this.confirm}>
-            <View style={styles.confirmBtn}>
+            <View style={props.buttonStyle}>
               <Text
                 ellipsisMode="tail" numberOfLines={1}
                 style={[styles.confirmText, subFontColor]}>
