@@ -28,13 +28,16 @@ export default class Calendar extends Component {
     customI18n: PropTypes.object,
     color: PropTypes.object,
     minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-    maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
+    maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    buttonStyle: PropTypes.object,
+    renderButton: PropTypes.func,
   }
   static defaultProps = {
     format: 'YYYY-MM-DD',
     i18n: 'en',
     customI18n: {},
-    color: {}
+    color: {},
+    buttonStyle: styles.confirmBtn,
   }
   static I18N_MAP = {
     'zh': {
@@ -172,6 +175,40 @@ export default class Calendar extends Component {
       });
     }
   }
+  _renderButton (props, isValid) {
+    if (this.props.renderButton) {
+      this.props.renderButton(props, isValid);
+    } else {
+      if (isValid) {
+        return(
+          <TouchableHighlight
+            underlayColor="rgba(255, 255, 255, 0.45)"
+            style={styles.confirmContainer}
+            onPress={this.confirm}>
+            <View style={props.buttonStyle}>
+              <Text
+                ellipsisMode="tail" numberOfLines={1}
+                style={[styles.confirmText, subFontColor]}>
+                {this._i18n('save', 'text')}
+              </Text>
+            </View>
+          </TouchableHighlight>        
+        )
+      } else {
+        return(
+          <View style={[styles.confirmContainer, styles.confirmContainerDisabled]}>
+            <View style={styles.confirmBtn}>
+              <Text
+                ellipsisMode="tail" numberOfLines={1}
+                style={[styles.confirmText, styles.confirmTextDisabled]}>
+                {this._i18n('save', 'text')}
+              </Text>
+            </View>
+          </View>
+        )
+      }
+    }
+  }
   cancel () {
     this.close();
     this._resetCalendar();
@@ -211,6 +248,7 @@ export default class Calendar extends Component {
     });
     this.close();
   }
+
   render () {
     const {
       startDate,
@@ -292,28 +330,8 @@ export default class Calendar extends Component {
             />
           </View>
           <View style={styles.btn}>
-            {isValid ?
-              <TouchableHighlight
-                underlayColor="rgba(255, 255, 255, 0.45)"
-                style={styles.confirmContainer}
-                onPress={this.confirm}>
-                <View style={styles.confirmBtn}>
-                  <Text
-                    ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, subFontColor]}>
-                    {this._i18n('save', 'text')}
-                  </Text>
-                </View>
-              </TouchableHighlight> :
-              <View style={[styles.confirmContainer, styles.confirmContainerDisabled]}>
-                <View style={styles.confirmBtn}>
-                  <Text
-                    ellipsisMode="tail" numberOfLines={1}
-                    style={[styles.confirmText, styles.confirmTextDisabled]}>
-                    {this._i18n('save', 'text')}
-                  </Text>
-                </View>
-              </View>
+            {
+              this._renderButton(this.props, isValid)
             }
           </View>
         </View>
