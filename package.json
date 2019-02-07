@@ -21,7 +21,7 @@
 		"calendar"
 	],
 	"dependencies": {
-		"moment": "^2.18.1"
+		"moment": "2.24.0"
 	},
 	"peerDependencies": {
 		"prop-types": "^15.6.0",
