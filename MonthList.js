@@ -6,7 +6,7 @@ import React, {PropTypes, Component} from 'react';
 import {
   View,
   Text,
-  ListView,
+  FlatList,
   Dimensions
 } from 'react-native';
 import Moment from 'moment';
@@ -16,14 +16,14 @@ const {width} = Dimensions.get('window');
 export default class MonthList extends Component {
   constructor (props) {
     super(props);
-    this.ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => {
-        return r2.shouldUpdate;
-      }
-    });
+    // this.ds = new ListView.DataSource({
+    //   rowHasChanged: (r1, r2) => {
+    //     return r2.shouldUpdate;
+    //   }
+    // });
     this.monthList = [];
     this.state = {
-      dataSource: this.ds.cloneWithRows(this._getMonthList())
+      dataSource: this._getMonthList()
     };
     this._renderMonth = this._renderMonth.bind(this);
     this._shouldUpdate = this._shouldUpdate.bind(this);
@@ -40,15 +40,15 @@ export default class MonthList extends Component {
     }, false);
     if (isDateUpdated) {
       this.setState({
-        dataSource:
-          this.state.dataSource.cloneWithRows(this._getMonthList(nextProps))
+        dataSource:this._getMonthList(nextProps)
       });
     }
   }
-  _renderMonth (month) {
+  _renderMonth ({item, index}) {
+    console.log("mese ",item)
     return (
       <Month
-        month={month.date || {}}
+        month={item.date || {}}
         {...this.props}
       />
     );
@@ -114,7 +114,7 @@ export default class MonthList extends Component {
       startDate.month() - minDate.month();
     let weekOffset = this._getWeekNums(minDate, startDate);
     setTimeout(() => {
-      this.list && this.list.scrollTo({
+      this.list && this.list.scrollToOffset({
         x: 0,
         y: monthOffset * (24 + 25) + (monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
         animated: true
@@ -126,14 +126,15 @@ export default class MonthList extends Component {
   }
   render () {
     return (
-      <ListView
+      <FlatList
         ref={(list) => {this.list = list;}}
         style={styles.scrollArea}
-        dataSource={this.state.dataSource}
-        renderRow={this._renderMonth}
+        data={this.state.dataSource}
+        renderItem={this._renderMonth}
         pageSize={2}
         initialListSize={2}
         showsVerticalScrollIndicator={false}
+        keyExtractor={(item,index)=> item.date.format('X')}
       />
     );
   }
