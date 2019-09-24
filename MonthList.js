@@ -16,11 +16,7 @@ const {width} = Dimensions.get('window');
 export default class MonthList extends Component {
   constructor (props) {
     super(props);
-    // this.ds = new ListView.DataSource({
-    //   rowHasChanged: (r1, r2) => {
-    //     return r2.shouldUpdate;
-    //   }
-    // });
+    this.ds = []
     this.monthList = [];
     this.state = {
       dataSource: this._getMonthList()
@@ -44,8 +40,7 @@ export default class MonthList extends Component {
       });
     }
   }
-  _renderMonth ({item, index}) {
-    console.log("mese ",item)
+  _renderMonth ({item}) {
     return (
       <Month
         month={item.date || {}}
@@ -115,8 +110,7 @@ export default class MonthList extends Component {
     let weekOffset = this._getWeekNums(minDate, startDate);
     setTimeout(() => {
       this.list && this.list.scrollToOffset({
-        x: 0,
-        y: monthOffset * (24 + 25) + (monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
+        offset: monthOffset * (24 + 25) + (monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
         animated: true
       });
     }, 400);
@@ -131,10 +125,9 @@ export default class MonthList extends Component {
         style={styles.scrollArea}
         data={this.state.dataSource}
         renderItem={this._renderMonth}
-        pageSize={2}
-        initialListSize={2}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item,index)=> item.date.format('X')}
+        keyExtractor={(item,index)=>item.date.format('YYYY-MM-DD')}
+        initialNumToRender={2}
+        showsHorizontalScrollIndicator={false}
       />
     );
   }
