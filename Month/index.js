@@ -109,7 +109,7 @@ export default class Month extends Component {
     let subColor = {color: color.subColor};
     let titleText = this._getMonthText();
     let dayList = this._getDayList(month.clone());
-    let rowArray = new Array(dayList.length / 7).fill('');
+    let rowArray = new Array(Math.floor(dayList.length / 7)).fill('');
     return (
       <View style={styles.month}>
         <View style={styles.monthTitle}>
