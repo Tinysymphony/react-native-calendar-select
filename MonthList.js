@@ -12,43 +12,47 @@ import {
 import Moment from 'moment';
 import styles from './CalendarStyle';
 import Month from './Month';
+import { FlatList } from 'react-native-gesture-handler';
+import {_getMonthList,_checkRange,_getWeekNums} from './utils'
 const {width} = Dimensions.get('window');
+
+
 export default class MonthList extends Component {
   constructor (props) {
     super(props);
-    this.ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => {
-        return r2.shouldUpdate;
-      }
-    });
+    
     this.monthList = [];
     this.state = {
-      dataSource: this.ds.cloneWithRows(this._getMonthList())
+      dataSource: _getMonthList(this.props)
     };
-    this._renderMonth = this._renderMonth.bind(this);
-    this._shouldUpdate = this._shouldUpdate.bind(this);
-    this._checkRange = this._checkRange.bind(this);
-    this._getWeekNums = this._getWeekNums.bind(this);
+ 
+    this._shouldUpdate = this._shouldUpdate.bind(this)
     this._scrollToSelecetdMonth = this._scrollToSelecetdMonth.bind(this);
   }
-  componentWillReceiveProps (nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState){
     let isDateUpdated = ['startDate', 'endDate', 'minDate', 'maxDate'].reduce((prev, next) => {
-      if (prev || nextProps[next] !== this.props[next]) {
+      if (prev || nextProps[next] !== prevState[next]) {
         return true;
       }
       return prev;
     }, false);
     if (isDateUpdated) {
-      this.setState({
-        dataSource:
-          this.state.dataSource.cloneWithRows(this._getMonthList(nextProps))
-      });
+      return{
+        ...prevState,
+        dataSource:_getMonthList(nextProps)
+      };
+    }
+    return {
+      ...prevState
     }
   }
-  _renderMonth (month) {
+  
+
+   
+  _renderMonth =({item,index})=> {
     return (
       <Month
-        month={month.date || {}}
+        month={item.date || {}}
         {...this.props}
       />
     );
@@ -69,42 +73,13 @@ export default class MonthList extends Component {
     const {
       date
     } = month;
-    let next = this._checkRange(date, startDate, endDate);
-    let prev = this._checkRange(date, this.props.startDate, this.props.endDate);
+    let next = _checkRange(date, startDate, endDate);
+    let prev = _checkRange(date, this.props.startDate, this.props.endDate);
     if (prev || next) return true;
     return false;
   }
-  _getMonthList (props) {
-    let minDate = (props || this.props).minDate.clone().date(1);
-    let maxDate = (props || this.props).maxDate.clone();
-    let monthList = [];
-    if (!maxDate || !minDate) return monthList;
-    while (maxDate > minDate || (
-      maxDate.year() === minDate.year() &&
-      maxDate.month() === minDate.month()
-    )) {
-      let month = {
-        date: minDate.clone()
-      };
-      month.shouldUpdate = this._shouldUpdate(month, props);
-      monthList.push(month);
-      minDate.add(1, 'month');
-    }
-    return monthList;
-  }
-  _getWeekNums(start, end) {
-    let clonedMoment = Moment(start), date, day, num, y, m, total = 0;
-    while (!clonedMoment.isSame(end, 'months')) {
-      y = clonedMoment.year();
-      m = clonedMoment.month();
-      date = new Date(y, m, 1);
-      day = date.getDay();
-      num = new Date(y, m + 1, 0).getDate();
-      total += Math.ceil((num + day) / 7);
-      clonedMoment.add(1, 'months');
-    }
-    return total;
-  }
+ 
+
   _scrollToSelecetdMonth () {
     const {
       startDate,
@@ -112,11 +87,10 @@ export default class MonthList extends Component {
     } = this.props;
     let monthOffset = 12 * (startDate.year() - minDate.year()) +
       startDate.month() - minDate.month();
-    let weekOffset = this._getWeekNums(minDate, startDate);
+    let weekOffset = _getWeekNums(minDate, startDate);
     setTimeout(() => {
-      this.list && this.list.scrollTo({
-        x: 0,
-        y: monthOffset * (24 + 25) + (monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
+      this.list && this.list.scrollToOffset({
+        offset: monthOffset * (24 + 25) + (monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
         animated: true
       });
     }, 400);
@@ -126,13 +100,14 @@ export default class MonthList extends Component {
   }
   render () {
     return (
-      <ListView
+      <FlatList
         ref={(list) => {this.list = list;}}
         style={styles.scrollArea}
-        dataSource={this.state.dataSource}
-        renderRow={this._renderMonth}
+        data={this.state.dataSource}
+        renderItem={this._renderMonth}
         pageSize={2}
         initialListSize={2}
+        keyExtractor={(item,index)=> item.date.format('X')}
         showsVerticalScrollIndicator={false}
       />
     );

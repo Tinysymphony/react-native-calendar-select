@@ -10,9 +10,6 @@ import {
   Text,
   Modal,
   Image,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
   TouchableHighlight
 } from 'react-native';
 import Moment from 'moment';

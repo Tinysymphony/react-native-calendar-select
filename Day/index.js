@@ -13,21 +13,22 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import styles from './style';
+import moment from 'moment';
 
 export default class Day extends Component {
   static propTypes = {
     onChoose: PropTypes.func
   }
-  constructor (props) {
+  constructor(props) {
     super(props);
     this._chooseDay = this._chooseDay.bind(this);
     this._statusCheck = this._statusCheck.bind(this);
     this._statusCheck();
   }
-  _chooseDay () {
+  _chooseDay() {
     this.props.onChoose && this.props.onChoose(this.props.date);
   }
-  _statusCheck (props) {
+  _statusCheck(props) {
     const {
       startDate,
       endDate,
@@ -49,22 +50,29 @@ export default class Day extends Component {
     this.isFocus = this.isMid || this.isStart || this.isEnd;
     return this.isFocus;
   }
-  shouldComponentUpdate (nextProps) {
+  shouldComponentUpdate(nextProps) {
     let prevStatus = this.isFocus;
     let nextStatus = this._statusCheck(nextProps);
     if (prevStatus || nextStatus) return true;
     return false;
   }
-  render () {
+  isDisabled = (day) => {
+    if (day)
+      return day.isBefore(Moment().subtract(2, 'day'))
+    else
+      return false
+  }
+  render() {
     const {
       date,
       color
     } = this.props;
     let text = date ? date.date() : '';
-    let mainColor = {color: color.mainColor};
-    let subColor = {color: color.subColor};
-    let mainBack = {backgroundColor: color.mainColor};
-    let subBack = {backgroundColor: color.subColor};
+    let mainColor = { color: color.mainColor };
+    let subColor = { color: color.subColor };
+    let mainBack = { backgroundColor: color.mainColor };
+    let subBack = { backgroundColor: color.subColor };
+
     return (
       <View
         style={[
@@ -77,6 +85,7 @@ export default class Day extends Component {
         {this.isValid ?
           <TouchableHighlight
             style={[styles.day, this.isToday && styles.today, this.isFocus && subBack]}
+            disabled={this.isDisabled(date)}
             underlayColor="rgba(255, 255, 255, 0.35)"
             onPress={this._chooseDay}>
             <Text style={[styles.dayText, subColor, this.isFocus && mainColor]}>{text}</Text>
