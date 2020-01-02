@@ -1,27 +1,27 @@
 {
-  "_from": "react-native-calendar-select@^0.1.2",
+  "_from": "react-native-calendar-select@0.1.2",
   "_id": "react-native-calendar-select@0.1.2",
   "_inBundle": false,
   "_integrity": "sha512-iL/nVWS/5/+UfBTUP765FAn+/NBkYfJr+ap12EpO6y9+tq9sXnXIByX61fbk2R4FSTIwspL3EXr0U+yoXabB+A==",
   "_location": "/react-native-calendar-select",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "react-native-calendar-select@^0.1.2",
+    "raw": "react-native-calendar-select@0.1.2",
     "name": "react-native-calendar-select",
     "escapedName": "react-native-calendar-select",
-    "rawSpec": "^0.1.2",
+    "rawSpec": "0.1.2",
     "saveSpec": null,
-    "fetchSpec": "^0.1.2"
+    "fetchSpec": "0.1.2"
   },
   "_requiredBy": [
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/react-native-calendar-select/-/react-native-calendar-select-0.1.2.tgz",
   "_shasum": "814302a2add128209e91d1485d9afdb83b726712",
-  "_spec": "react-native-calendar-select@^0.1.2",
-  "_where": "/Users/developer7/Desktop/work/HotelHugNew/hotehug",
+  "_spec": "react-native-calendar-select@0.1.2",
+  "_where": "/Users/developer7/Desktop/repository hotelhug/master/hotelhug-app",
   "bugs": {
     "url": "https://github.com/Tinysymphony/react-native-calendar-select/issues"
   },
