@@ -1,59 +1,89 @@
 {
-	"name": "react-native-calendar-select",
-	"version": "0.1.2",
-	"description": "Calendar select component for react-native, like Airbnb.",
-	"main": "./Calendar.js",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Tinysymphony/react-native-calendar-select.git"
-	},
-	"scripts": {
-		"start": "react-native start",
-		"ios": "react-native run-ios",
-		"android": "react-native run-android",
-		"test": "jest",
-		"coverage": "cat ./coverage/lcov.info | coveralls",
-		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
-	},
-	"keywords": [
-		"react-native",
-		"react-native-calendar-xg",
-		"calendar"
-	],
-	"dependencies": {
-		"moment": "^2.18.1"
-	},
-	"peerDependencies": {
-		"prop-types": "^15.6.0",
-		"react": "^15.4.2",
-		"react-native": "^0.41.2"
-	},
-	"devDependencies": {
-		"coveralls": "^2.13.1",
-		"cz-conventional-changelog": "^2.0.0",
-		"babel-jest": "21.2.0",
-		"babel-preset-react-native": "4.0.0",
-		"enzyme": "^3.2.0",
-		"enzyme-adapter-react-16": "^1.1.0",
-		"istanbul": "^0.4.5",
-		"jest": "21.2.1",
-		"react": "^16.1.0",
-		"react-addons-test-utils": "^15.6.2",
-		"react-dom": "^16.2.0",
-		"react-native": "^0.50.0",
-		"react-test-renderer": "16.0.0"
-	},
-	"jest": {
-		"preset": "react-native",
-		"verbose": true,
-		"collectCoverage": true,
-		"moduleFileExtensions": [
-			"js"
-		]
-	},
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/cz-conventional-changelog"
-		}
-	}
+  "_from": "react-native-calendar-select",
+  "_id": "react-native-calendar-select@0.1.2",
+  "_inBundle": false,
+  "_integrity": "sha512-iL/nVWS/5/+UfBTUP765FAn+/NBkYfJr+ap12EpO6y9+tq9sXnXIByX61fbk2R4FSTIwspL3EXr0U+yoXabB+A==",
+  "_location": "/react-native-calendar-select",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-native-calendar-select",
+    "name": "react-native-calendar-select",
+    "escapedName": "react-native-calendar-select",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-calendar-select/-/react-native-calendar-select-0.1.2.tgz",
+  "_shasum": "814302a2add128209e91d1485d9afdb83b726712",
+  "_spec": "react-native-calendar-select",
+  "_where": "D:\\erp_app-master\\erp_app-master",
+  "bugs": {
+    "url": "https://github.com/Tinysymphony/react-native-calendar-select/issues"
+  },
+  "bundleDependencies": false,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "moment": "^2.18.1"
+  },
+  "deprecated": false,
+  "description": "Calendar select component for react-native, like Airbnb.",
+  "devDependencies": {
+    "babel-jest": "21.2.0",
+    "babel-preset-react-native": "4.0.0",
+    "coveralls": "^2.13.1",
+    "cz-conventional-changelog": "^2.0.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "istanbul": "^0.4.5",
+    "jest": "21.2.1",
+    "react": "^16.1.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-native": "^0.50.0",
+    "react-test-renderer": "16.0.0"
+  },
+  "homepage": "https://github.com/Tinysymphony/react-native-calendar-select#readme",
+  "jest": {
+    "preset": "react-native",
+    "verbose": true,
+    "collectCoverage": true,
+    "moduleFileExtensions": [
+      "js"
+    ]
+  },
+  "keywords": [
+    "react-native",
+    "react-native-calendar-xg",
+    "calendar"
+  ],
+  "main": "./Calendar.js",
+  "name": "react-native-calendar-select",
+  "peerDependencies": {
+    "prop-types": "^15.6.0",
+    "react": "^15.4.2",
+    "react-native": "^0.41.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tinysymphony/react-native-calendar-select.git"
+  },
+  "scripts": {
+    "android": "react-native run-android",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "coverage": "cat ./coverage/lcov.info | coveralls",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "version": "0.1.2"
 }
