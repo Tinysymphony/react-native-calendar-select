@@ -204,7 +204,7 @@ export default class Calendar extends Component {
     let minValid = min.isValid();
     if (!maxValid && !minValid) {
       max = Moment().add(24, 'months');
-      min = Moment().subtract(12,'months');
+      min = Moment().subtract(11,'months');
     }
     if (!maxValid && minValid) {
       max = min.add(36, 'months');
